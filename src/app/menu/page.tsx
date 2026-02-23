@@ -1,0 +1,461 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Music, Calendar, Clock, MapPin, Star, Utensils } from 'lucide-react';
+import { getDailySpecials, DailySpecialData } from '@/lib/wordpress';
+
+interface MenuItem {
+    name: string;
+    price: string;
+    description: string;
+}
+
+interface MenuSection {
+    category: string;
+    items: MenuItem[];
+    note?: string;
+    footer?: string;
+}
+
+const mainMenuData: MenuSection[] = [
+    {
+        category: "SOUP & SALAD",
+        items: [
+            { name: "Crock of French Onion", price: "6.99", description: "" },
+            { name: "Daily Soup", price: "Cup 3.99 | Bowl 4.99 | Pint To Go 7.99", description: "" },
+            { name: "Lobster Bisque or New England Clam Chowder", price: "Cup 4.99 | Bowl 5.99 | Pint To Go 8.99", description: "" },
+            { name: "House Salad", price: "6.99", description: "Crisp fresh greens & garden vegetables served on the side" },
+            { name: "Traditional Caesar Salad", price: "8.99", description: "Freshly chopped romaine hearts in rich Caesar dressing topped with crunchy croutons & parmesan cheese" }
+        ],
+        footer: "Add to Any Salad (Blackened or Grilled): Chicken 8.99 | Shrimp 15.99 | Steak 15.99 | Swordfish 18.99 | Tuna 18.99"
+    },
+    {
+        category: "APPETIZERS",
+        items: [
+            { name: "Boneless Wings (5 pc)", price: "8.99", description: "Bourbon, Buffalo, Carolina Gold, Honey Barbecue, or Garlic Parmesan" },
+            { name: "Boneless Wings (10 pc)", price: "15.99", description: "Bourbon, Buffalo, Carolina Gold, Honey Barbecue, or Garlic Parmesan" },
+            { name: "Bone-In Wings (Dozen)", price: "20.99", description: "Served with celery & bleu cheese or ranch (Extra 1.50). One flavor per order." },
+            { name: "Chilled Shrimp Cocktail (6)", price: "14.99", description: "Peeled & jumbo shrimp on a bed of mixed greens" },
+            { name: "Clams Casino (6)", price: "13.99", description: "" },
+            { name: "Crabby’s Crab Cakes (2)", price: "Market Price", description: "Grilled crisp & served with remoulade sauce. Make it a meal with potato & vegetable (Market Price)." },
+            { name: "Fried Calamari (10 oz)", price: "13.99", description: "Classic with marinara sauce" },
+            { name: "Fritti Fried Cherry Peppers & Gorgonzola", price: "15.99", description: "" },
+            { name: "Crabby Style Melted Gorgonzola", price: "15.99", description: "" },
+            { name: "Stuffed Mushrooms (5)", price: "14.99", description: "With housemade lobster & crab stuffing" },
+            { name: "Garlic Bread", price: "4.99 (Plain 3.99)", description: "" },
+            { name: "Golden Coconut Shrimp (6)", price: "12.99", description: "Served with sweet & sour sauce" },
+            { name: "Grilled Quesadilla", price: "Cheese 6.99 | Chicken 10.99 | Shrimp 13.99 | Steak 15.99", description: "" },
+            { name: "Little Neck Clams", price: "15.99", description: "By the dozen raw or steamed" },
+            { name: "Mussels Fra Diavolo or Lemon Garlic Butter", price: "16.99", description: "" },
+            { name: "Shrimp & Garlic Bread (5)", price: "16.99", description: "Grilled or blackened shrimp" }
+        ]
+    },
+    {
+        category: "SANDWICHES",
+        note: "All sandwiches served with a pickle & choice of French fries or house-made chips (Sweet potato fries +1.50 | GF rolls +2.50)",
+        items: [
+            { name: "Black Angus Burger", price: "15.99", description: "½ lb on a toasted roll (Add cheese 1.00)" },
+            { name: "Buffalo Crispy Chicken Wrap", price: "15.99", description: "With bacon & cheese" },
+            { name: "Crispy Chicken Sandwich", price: "14.99", description: "Topped with sriracha aioli" },
+            { name: "Fresh Fish Sandwich", price: "15.99", description: "Atlantic cod broiled or fried with tartar sauce" },
+            { name: "Grilled Chicken Sandwich", price: "14.99", description: "Blackened, barbecue, bourbon sauce, or grilled" },
+            { name: "Ham Cubano", price: "14.99", description: "Ham, Swiss, pickles & mustard" },
+            { name: "NY Strip Steak Sandwich", price: "17.99", description: "With sautéed mushrooms, onions & melted American cheese" },
+            { name: "Sweet Sausage Burger", price: "15.99", description: "With sautéed peppers & onions topped with melted American cheese" },
+            { name: "Veggie Burger", price: "14.99", description: "Chipotle black bean patty" }
+        ]
+    },
+    {
+        category: "PASTA STATION",
+        items: [
+            { name: "Chicken Francaise, Marsala or Piccata", price: "26.99", description: "Served over pasta or with potato & vegetable" },
+            { name: "Chicken Parmesan", price: "27.99", description: "Breaded & fried over pasta" },
+            { name: "Chicken or Pork Milanese", price: "27.99 (Fra Diavolo 28.99)", description: "Lemon butter sauce over pasta topped with melted cheese" },
+            { name: "Linguini & Clams", price: "26.99", description: "Red or white garlic sauce" },
+            { name: "Mussels Over Linguini", price: "26.99", description: "Fra Diavolo or Lemon Garlic Butter" },
+            { name: "Seafood Newburg", price: "Market Price", description: "Shrimp, scallops & lobster meat in savory lobster bisque sauce over penne" },
+            { name: "Shrimp Scampi", price: "28.99", description: "Lemon garlic sauce over angel hair pasta" }
+        ]
+    },
+    {
+        category: "SEAFOOD ROLLS",
+        note: "Served on toasted New England rolls with choice of French fries or chips",
+        items: [
+            { name: "Fried Scallop Roll (6 pc)", price: "23.99", description: "" },
+            { name: "Clam Strip Roll (5 oz)", price: "18.99", description: "" },
+            { name: "Hot or Cold Lobster Roll (7 oz)", price: "Market Price", description: "" },
+            { name: "Whole Belly Clam Roll (5 oz)", price: "Market Price", description: "" }
+        ]
+    },
+    {
+        category: "FRIED SEAFOOD PLATTERS",
+        note: "All served with French fries",
+        items: [
+            { name: "Fish & Chips", price: "25.99", description: "" },
+            { name: "Fried Fish Platter", price: "26.99", description: "Clam strips, cod & shrimp" },
+            { name: "Two Way Combo", price: "25.99", description: "Choice of any two: clam strips, cod, Gulf shrimp or calamari" },
+            { name: "Clam Strips (8 oz)", price: "22.99", description: "" },
+            { name: "Coconut Shrimp (8 pc)", price: "18.99", description: "" },
+            { name: "Jumbo Gulf Shrimp (7 pc)", price: "24.99", description: "" },
+            { name: "Sea Scallops (8 oz)", price: "27.99", description: "" },
+            { name: "Whole Bellies (8 oz)", price: "Market Price", description: "" }
+        ]
+    },
+    {
+        category: "FROM THE SEA",
+        note: "All served with choice of potato & daily vegetable",
+        items: [
+            { name: "Boston Baked Cod", price: "25.99", description: "" },
+            { name: "Broiled Sea Scallops", price: "29.99", description: "" },
+            { name: "Salmon Filet", price: "26.99", description: "" },
+            { name: "Stuffed Jumbo Gulf Shrimp (4)", price: "27.99", description: "" },
+            { name: "Stuffed Salmon or Swordfish", price: "30.99", description: "" },
+            { name: "Swordfish Steak", price: "26.99", description: "" },
+            { name: "Yellowfin Tuna", price: "28.99", description: "" }
+        ]
+    },
+    {
+        category: "NOT FISH",
+        note: "All served with choice of potato & daily vegetable",
+        items: [
+            { name: "NY Strip or Ribeye (14 oz)", price: "Market Price", description: "" },
+            { name: "Maple Dijon Pork Chops", price: "30.99", description: "" }
+        ]
+    },
+    {
+        category: "SIDES",
+        items: [
+            { name: "Baked Potato", price: "2.50", description: "" },
+            { name: "Cole Slaw (8 oz)", price: "2.99", description: "" },
+            { name: "Daily Vegetable", price: "2.50", description: "" },
+            { name: "Daily Rice", price: "2.50", description: "" },
+            { name: "Garlic Mashed Potato", price: "2.50", description: "" },
+            { name: "Loaded Baked Potato", price: "4.50", description: "" },
+            { name: "Loaded Garlic Mashed", price: "4.50", description: "" },
+            { name: "Sweet Potato Fries", price: "3.99", description: "" }
+        ]
+    }
+];
+
+const kidsMenuData: MenuSection[] = [
+    {
+        category: "KIDS SELECTIONS",
+        note: "For our friends 12 and under. All meals include choice of French fries or chips.",
+        items: [
+            { name: "Chicken Tenders (3)", price: "8.99", description: "Crispy breaded chicken strips with honey mustard or BBQ sauce." },
+            { name: "Grilled Cheese", price: "7.99", description: "Buttery toasted bread with melted American cheese." },
+            { name: "Fried Shrimp (5)", price: "10.99", description: "Golden fried jumbo shrimp." },
+            { name: "Hot Dog", price: "6.99", description: "All-beef hot dog on a toasted roll." },
+            { name: "Pasta", price: "7.99", description: "Choice of Penne or Linguini with butter or marinara sauce." },
+            { name: "Fish & Chips Junior", price: "12.99", description: "Smaller portion of our famous golden fried cod." }
+        ]
+    }
+];
+
+const brunchMenuData: MenuSection[] = [
+    {
+        category: "SMALL BITES",
+        items: [
+            { name: "Cinnamon Sugar Pretzel Bites", price: "14.99", description: "" },
+            { name: "Blackened Shrimp and Grits", price: "16.99", description: "" }
+        ]
+    },
+    {
+        category: "Main Course",
+        note: "All Items Below Served With Home Fries.",
+        items: [
+            { name: "Chicken and Waffles", price: "17.99", description: "With Applewood Bacon and Maple Cream Drizzle" },
+            { name: "Eggs Benedict", price: "16.99", description: "With Smoked Salmon or Canadian Bacon" },
+            { name: "Steak and Eggs", price: "19.99", description: "With Marinated Skirt Steak and 2 Eggs" },
+            { name: "Sweet Sausage Breakfast Burger", price: "16.99", description: "With American Cheese, Fried Egg and Roasted Peppers" }
+        ]
+    },
+    {
+        category: "Drinks",
+        items: [
+            { name: "Sunrise Mimosa", price: "9", description: "Prosecco, OJ and Grenadine" },
+            { name: "Blueberry Muffin Shot", price: "6", description: "Stoli Blue and Rumchata" },
+            { name: "French Toast Martini", price: "14", description: "Stoli Vanilla, Baileys, Butterscotch Schnapps & Caramel with a Cinnamon Sugar Rim" }
+        ]
+    }
+];
+
+const dailySpecials: MenuSection[] = [
+    {
+        category: "WEEKLY SPECIALS",
+        items: [
+            { name: "Taco Tuesday", price: "14.95", description: "Fish tacos with homemade salsa and zesty lime crema." },
+            { name: "Wing Wednesday", price: "0.75/wing", description: "Jumbo wings with your choice of nautical-themed sauces." },
+            { name: "Pasta Night (Thu)", price: "18.95", description: "Choice of Seafood Linguine or Shrimp Scampi with garlic bread." },
+            { name: "Prime Rib Night (Fri)", price: "24.95", description: "Slow-roasted prime rib served with au jus and mashed potatoes." },
+            { name: "Crabby Monday", price: "Market", description: "Buy one Crab Cake Dinner, get the second half off." }
+        ]
+    }
+];
+
+export default function MenuPage() {
+    const [activeTab, setActiveTab] = useState("Main Menu");
+    const [specials, setSpecials] = useState<DailySpecialData | null>(null);
+    const [loadingSpecials, setLoadingSpecials] = useState(false);
+
+    useEffect(() => {
+        if (activeTab === "Daily Specials" && !specials) {
+            setLoadingSpecials(true);
+            getDailySpecials().then(data => {
+                setSpecials(data);
+                setLoadingSpecials(false);
+            });
+        }
+    }, [activeTab, specials]);
+
+    const tabs = [
+        { name: "Main Menu", icon: <Utensils size={18} /> },
+        { name: "Kids Menu", icon: <Star size={18} /> },
+        { name: "Brunch Menu", icon: <Clock size={18} /> },
+        { name: "Daily Specials", icon: <Calendar size={18} /> }
+    ];
+
+    const getActiveData = () => {
+        switch (activeTab) {
+            case "Main Menu": return mainMenuData;
+            case "Kids Menu": return kidsMenuData;
+            case "Brunch Menu": return brunchMenuData;
+            case "Daily Specials": return dailySpecials;
+            default: return mainMenuData;
+        }
+    };
+
+    const today = new Date();
+    const defaultDate = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    return (
+        <div className="section" style={{ minHeight: '100vh', background: 'var(--background)', paddingTop: '4rem' }}>
+            <div className="container" style={{ maxWidth: '1000px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                    <img src="/logo_with_text.png" alt="Crabby Al's Logo" style={{ height: '150px', width: 'auto', marginBottom: '2rem' }} />
+
+                    {/* Tab Navigation */}
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexWrap: 'wrap',
+                        gap: '1rem',
+                        marginBottom: '4rem'
+                    }}>
+                        {tabs.map((tab) => (
+                            <button
+                                key={tab.name}
+                                onClick={() => setActiveTab(tab.name)}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.75rem',
+                                    padding: '0.75rem 1.5rem',
+                                    borderRadius: '50px',
+                                    border: 'none',
+                                    background: activeTab === tab.name ? 'var(--primary)' : 'var(--white)',
+                                    color: activeTab === tab.name ? 'white' : 'var(--primary)',
+                                    fontWeight: 'bold',
+                                    cursor: 'pointer',
+                                    transition: 'var(--transition)',
+                                    boxShadow: activeTab === tab.name ? '0 10px 20px rgba(10, 61, 98, 0.2)' : '0 4px 10px rgba(0,0,0,0.05)',
+                                    fontSize: '0.9rem'
+                                }}
+                            >
+                                {tab.icon}
+                                {tab.name}
+                            </button>
+                        ))}
+                    </div>
+
+                    {activeTab === "Main Menu" && (
+                        <div style={{
+                            fontSize: '1.2rem',
+                            color: 'var(--primary)',
+                            fontWeight: '600',
+                            marginTop: '-1rem',
+                            marginBottom: '2rem',
+                            fontStyle: 'italic',
+                            opacity: 0.9,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.25rem'
+                        }}>
+                            <div>Available</div>
+                            <div>Sunday–Thursday: 11am–10pm</div>
+                            <div>Friday–Saturday: 11am–11pm</div>
+                        </div>
+                    )}
+
+                    {activeTab === "Brunch Menu" && (
+                        <div style={{
+                            fontSize: '1.2rem',
+                            color: 'var(--primary)',
+                            fontWeight: '600',
+                            marginTop: '-1rem',
+                            marginBottom: '2rem',
+                            fontStyle: 'italic',
+                            opacity: 0.9
+                        }}>
+                            Brunch Menu Available 11AM – 3PM Every Sunday
+                        </div>
+                    )}
+                </div>
+
+                <div key={activeTab} className="fade-in">
+                    {activeTab === "Daily Specials" ? (
+                        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                            {loadingSpecials ? (
+                                <div style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <div className="animate-pulse" style={{ color: 'var(--primary)', fontWeight: 'bold', letterSpacing: '2px' }}>LOADING SPECIALS...</div>
+                                </div>
+                            ) : (
+                                <>
+                                    <img
+                                        src={specials?.imageUrl || "/daily-specials.png"}
+                                        alt="Daily Specials"
+                                        style={{
+                                            maxWidth: '800px',
+                                            width: '100%',
+                                            maxHeight: '70vh',
+                                            height: 'auto',
+                                            objectFit: 'contain',
+                                            boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                                            borderRadius: '12px'
+                                        }}
+                                        onError={(e) => {
+                                            const img = e.target as HTMLImageElement;
+                                            if (img.src.includes('hostingersite.com')) {
+                                                img.src = '/daily-specials.png';
+                                            } else if (img.src.endsWith('/daily-specials.png')) {
+                                                img.src = '/dummydata.png';
+                                            } else if (img.src.endsWith('/dummydata.png')) {
+                                                img.src = 'https://placehold.co/800x1000?text=Daily+Specials+Coming+Soon';
+                                            }
+                                        }}
+                                    />
+                                    <div style={{ marginTop: '2rem' }}>
+                                        <h2 style={{
+                                            fontFamily: 'var(--font-serif)',
+                                            fontSize: '1.2rem',
+                                            color: 'var(--accent)',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '2px',
+                                            margin: 0
+                                        }}>
+                                            {specials?.dateText ? `Specials for ${specials.dateText}` : `Specials for ${defaultDate}`}
+                                        </h2>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    ) : (
+                        getActiveData().map((section, idx) => (
+                            <div key={idx} style={{ marginBottom: '3rem' }}>
+                                <div style={{
+                                    textAlign: 'center',
+                                    marginBottom: '2rem',
+                                    position: 'relative'
+                                }}>
+                                    <h2 style={{
+                                        fontFamily: 'var(--font-serif)',
+                                        fontSize: '1.8rem',
+                                        color: 'var(--primary)',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '2px',
+                                        display: 'inline-block',
+                                        background: 'var(--background)',
+                                        padding: '0 1rem',
+                                        position: 'relative',
+                                        zIndex: 1
+                                    }}>
+                                        {section.category}
+                                    </h2>
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: 0,
+                                        right: 0,
+                                        height: '1px',
+                                        background: 'rgba(0,0,0,0.1)',
+                                        zIndex: 0
+                                    }}></div>
+                                    {section.note && (
+                                        <p style={{
+                                            fontStyle: 'italic',
+                                            opacity: 0.7,
+                                            marginTop: '0.5rem',
+                                            fontSize: '0.9rem'
+                                        }}>
+                                            {section.note}
+                                        </p>
+                                    )}
+                                </div>
+
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+                                    gap: '1.25rem 3rem'
+                                }}>
+                                    {section.items.map((item, iidx) => (
+                                        <div key={iidx} style={{ borderBottom: '1px dashed rgba(0,0,0,0.1)', paddingBottom: '0.75rem' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '1rem', marginBottom: '0.15rem' }}>
+                                                <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '700', letterSpacing: '0.5px' }}>{item.name}</h3>
+                                                <div style={{ fontWeight: 'bold', color: 'var(--accent)', fontSize: '1rem', whiteSpace: 'nowrap' }}>
+                                                    {item.price}
+                                                </div>
+                                            </div>
+                                            {item.description && <p style={{ opacity: 0.8, fontSize: '0.85rem', margin: 0 }}>{item.description}</p>}
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {section.footer && (
+                                    <div style={{
+                                        marginTop: '2rem',
+                                        textAlign: 'center',
+                                        padding: '1rem',
+                                        background: 'rgba(10, 61, 98, 0.05)',
+                                        borderRadius: '8px',
+                                        fontSize: '0.9rem',
+                                        fontWeight: '600'
+                                    }}>
+                                        {section.footer}
+                                    </div>
+                                )}
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                <div style={{
+                    marginTop: '4rem',
+                    padding: '3rem 2rem',
+                    background: 'var(--primary)',
+                    color: 'white',
+                    borderRadius: '16px',
+                    textAlign: 'center',
+                    boxShadow: '0 20px 40px rgba(10, 61, 98, 0.2)',
+                    marginBottom: '4rem'
+                }}>
+                    <h2 style={{ color: 'white', fontFamily: 'var(--font-serif)', fontSize: '2rem', marginBottom: '1.5rem' }}>Food for every mood.</h2>
+                    <p style={{ opacity: 0.9, maxWidth: '600px', margin: '0 auto 1.5rem', fontWeight: '600', fontSize: '1.1rem' }}>
+                        Before placing your order, please inform your server if a person in your party has a food allergy.
+                    </p>
+                    <div style={{ fontSize: '0.85rem', opacity: 0.7, maxWidth: '700px', margin: '0 auto', fontStyle: 'italic' }}>
+                        * Consuming raw or undercooked meats, poultry, seafood, shellfish or eggs may increase your risk of foodborne illness.
+                    </div>
+                </div>
+            </div>
+            <style jsx>{`
+                .fade-in {
+                    animation: fadeIn 0.5s ease-in-out;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `}</style>
+        </div>
+    );
+}
