@@ -25,6 +25,7 @@ export default function Navbar() {
     { name: 'Drinks', href: '/drinks' },
     { name: 'Specials', href: '/specials' },
     { name: 'Live Music', href: '/events' },
+    { name: 'Private Events', href: '/private-events' },
     { name: 'More', href: '/contact' },
   ];
 

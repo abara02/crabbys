@@ -30,17 +30,7 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0d1b2a;
-    --foreground: #e0e1dd;
-    --primary: #415a77;
-    --accent: #e63946;
-    --secondary: #778da9;
-    --muted: #1b263b;
-    --glass: rgba(13, 27, 42, 0.8);
-  }
-}
+
 
 * {
   box-sizing: border-box;
