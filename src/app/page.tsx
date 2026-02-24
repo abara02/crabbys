@@ -1,7 +1,7 @@
 'use client';
 
 import HeroSection from '@/components/HeroSection';
-import { Utensils, Music, Calendar, Beer, MapPin, Phone, Clock, Navigation } from 'lucide-react';
+import { Utensils, Music, Calendar, MapPin, Phone, Clock, Navigation } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -43,86 +43,102 @@ export default function Home() {
     }
   ];
 
-  const highlights = [
-    {
-      icon: <Utensils size={40} color="var(--accent)" />,
-      title: "Food",
-      description: "From our famous seafood rolls to American classics, discover the flavors that keep Thomaston coming back.",
-      href: "/menu"
-    },
-    {
-      icon: <Beer size={40} color="var(--accent)" />,
-      title: "Drinks",
-      description: "Pair your meal with our curated selection of ice-cold drafts, craft beers, and fine wines.",
-      href: "/drinks"
-    },
-    {
-      icon: <Music size={40} color="var(--accent)" />,
-      title: "Live Music",
-      description: "Experience the local talent and vibrant atmosphere that makes our weekends legendary.",
-      href: "/events"
-    },
-    {
-      icon: <Calendar size={40} color="var(--accent)" />,
-      title: "Events",
-      description: "From seafood festivals to trivia nights, there's always something happening under our roof.",
-      href: "/events"
-    }
-  ];
+
 
   return (
     <>
-      <div style={{
-        background: 'var(--accent)',
-        color: 'var(--primary)',
-        padding: '0.75rem',
-        textAlign: 'center',
-        fontWeight: 800,
-        fontSize: '1.1rem',
-        letterSpacing: '1px',
-        textTransform: 'uppercase',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-        position: 'relative',
-        zIndex: 100
-      }}>
-        ✨ New: Sunday Brunch starts Feb 22nd @ 11 AM! ✨
-      </div>
+
       <HeroSection />
 
-      <section className="section" style={{ background: 'var(--white)' }}>
+      {/* Subtitle Section */}
+      <section style={{ background: '#0a0a0a', padding: '5.5rem 0', textAlign: 'center' }}>
+        <div className="container" style={{ maxWidth: '820px' }}>
+          <p className="hero-blurb" style={{ color: 'rgba(255,255,255,0.88)', fontSize: '1.35rem', lineHeight: '1.9', margin: 0 }}>
+            Located on East Main Street, Crabby Al&apos;s serves up delicious food, cold drinks, live entertainment, and a beautiful outdoor patio to enjoy it all — dinner, drinks, and a great time.
+          </p>
+        </div>
+        <style>{`
+          @media (max-width: 768px) {
+            .hero-blurb { font-size: 0.95rem !important; line-height: 1.7 !important; }
+            section:has(.hero-blurb) { padding: 3rem 0 !important; }
+          }
+        `}</style>
+      </section>
+
+      {/* Our Menu Section */}
+
+      <section className="section" style={{ background: 'var(--white)', padding: '5rem 0' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '4rem', maxWidth: '800px', margin: '0 auto 4rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '1.5rem' }}>Experience Crabby Al&apos;s</h2>
-            <div style={{ width: '80px', height: '4px', background: 'var(--accent)', margin: '0 auto 2rem' }}></div>
-            <p style={{ fontSize: '1.2rem', opacity: 0.9, lineHeight: '1.8' }}>
-              Located on East Main Street, Crabby Al&apos;s serves up delicious seafood, American classics, ice-cold drinks, and lively weekend entertainment. It&apos;s dinner, drinks, and a good time — all under one roof.
-            </p>
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '0' }}>Our Menu</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
-            {highlights.map((item, index) => (
-              <Link key={index} href={item.href} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-                <div style={{
-                  padding: '2.5rem',
-                  textAlign: 'center',
-                  borderRadius: '8px',
-                  background: 'var(--background)',
-                  transition: 'var(--transition)',
-                  cursor: 'pointer',
-                  height: '100%'
-                }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                  <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                    {item.icon}
-                  </div>
-                  <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{item.title}</h3>
-                  <p style={{ opacity: 0.8 }}>{item.description}</p>
-                </div>
-              </Link>
-            ))}
+          <div className="menu-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            {/* Food Card */}
+            <Link href="/menu" className="menu-card" style={{ textDecoration: 'none', display: 'block', position: 'relative', overflow: 'hidden', aspectRatio: '4/3', borderRadius: '8px', boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}>
+              <img
+                src="/pics/crabby lobsta.png"
+                alt="Food Menu"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.5s ease' }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              />
+              {/* Dark overlay */}
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)' }} />
+              {/* Text */}
+              <div style={{ position: 'absolute', bottom: '1.75rem', left: '1.75rem' }}>
+                <h3 style={{ color: 'white', fontSize: '1.8rem', fontFamily: 'var(--font-serif)', margin: '0 0 0.2rem' }}>Food</h3>
+                <p style={{ color: 'rgba(255,255,255,0.85)', margin: '0 0 1rem', fontSize: '0.9rem' }}>Seafood, American Classics &amp; More</p>
+                <span style={{
+                  display: 'inline-block',
+                  background: 'white',
+                  color: '#111',
+                  padding: '0.45rem 1.4rem',
+                  borderRadius: '50px',
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  letterSpacing: '0.3px'
+                }}>See more</span>
+              </div>
+            </Link>
+
+            {/* Drinks Card */}
+            <Link href="/drinks" className="menu-card" style={{ textDecoration: 'none', display: 'block', position: 'relative', overflow: 'hidden', aspectRatio: '4/3', borderRadius: '8px', boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}>
+              <img
+                src="/pics/cheers.jpeg"
+                alt="Drinks Menu"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.5s ease' }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              />
+              {/* Dark overlay */}
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)' }} />
+              {/* Text */}
+              <div style={{ position: 'absolute', bottom: '1.75rem', left: '1.75rem' }}>
+                <h3 style={{ color: 'white', fontSize: '1.8rem', fontFamily: 'var(--font-serif)', margin: '0 0 0.2rem' }}>Drinks</h3>
+                <p style={{ color: 'rgba(255,255,255,0.85)', margin: '0 0 1rem', fontSize: '0.9rem' }}>Amazing Cocktails &amp; More</p>
+                <span style={{
+                  display: 'inline-block',
+                  background: 'white',
+                  color: '#111',
+                  padding: '0.45rem 1.4rem',
+                  borderRadius: '50px',
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  letterSpacing: '0.3px'
+                }}>See more</span>
+              </div>
+            </Link>
           </div>
         </div>
+        <style>{`
+          @media (max-width: 768px) {
+            .menu-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+            .menu-card { aspect-ratio: 3/2 !important; }
+          }
+        `}</style>
       </section>
+
 
       {/* Weekly Entertainment Section */}
       <section className="section" style={{ background: '#000000', color: 'white', padding: '6rem 0' }}>

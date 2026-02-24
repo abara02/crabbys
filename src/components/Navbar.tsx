@@ -80,7 +80,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Toggle */}
-        <button onClick={() => setIsOpen(!isOpen)} style={{ display: 'none' }} className="mobile-toggle">
+        <button onClick={() => setIsOpen(!isOpen)} style={{ display: 'none', color: 'white', background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }} className="mobile-toggle">
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
