@@ -5,117 +5,116 @@ export interface DailySpecialData {
     dateText: string;
 }
 
+export interface SeasonalSpecialData {
+    imageUrl: string;
+    label: string;
+}
+
 export async function getDailySpecials(): Promise<DailySpecialData | null> {
-    let currentQuery = `
+    const query = `
         query GetDailySpecials {
             specials(first: 1) {
                 nodes {
-                    dailySpecials_Fields {
+                    dailySpecials {
                         dailySpecials {
                             node {
                                 sourceUrl
                             }
                         }
-                        daily_specials {
-                            node {
-                                sourceUrl
-                            }
-                        }
-                        dateSpecials
-                        date_specials
+                        dayOfSpecials
                     }
                 }
             }
         }
     `;
 
-    const fetchWithQuery = async (q: string) => {
+    try {
         const response = await fetch(WP_GRAPHQL_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ query: q }),
+            body: JSON.stringify({ query }),
         });
-        return await response.json();
-    };
 
-    try {
-        let result = await fetchWithQuery(currentQuery);
-
-        // Resilience: Strip missing fields if WordPress has a different schema
-        let attempts = 0;
-        while (result.errors && attempts < 10) {
-            const errorMsg = result.errors[0].message;
-            const match = errorMsg.match(/[Ff]ield ["']([^"']+)["']/);
-            const fieldToStrip = match ? match[1] : null;
-
-            if (fieldToStrip) {
-                // Robust stripping: Find the field and its selection set if it has one
-                const fieldIndex = currentQuery.indexOf(fieldToStrip);
-                if (fieldIndex !== -1) {
-                    let endPos = fieldIndex + fieldToStrip.length;
-                    // Check if followed by a selection set { ... }
-                    const nextCharMatch = currentQuery.slice(endPos).match(/^\s*\{/);
-                    if (nextCharMatch) {
-                        // Find matching closing brace
-                        let braceCount = 0;
-                        let foundStart = false;
-                        for (let i = endPos; i < currentQuery.length; i++) {
-                            if (currentQuery[i] === '{') {
-                                braceCount++;
-                                foundStart = true;
-                            } else if (currentQuery[i] === '}') {
-                                braceCount--;
-                            }
-                            if (foundStart && braceCount === 0) {
-                                endPos = i + 1;
-                                break;
-                            }
-                        }
-                    }
-                    currentQuery = currentQuery.slice(0, fieldIndex) + currentQuery.slice(endPos);
-                }
-
-                // Cleanup: Remove any parent fields that now have empty braces { }
-                let cleaned = true;
-                while (cleaned) {
-                    const prev = currentQuery;
-                    currentQuery = currentQuery.replace(/[\w_]+\s*\{\s*\}/g, '');
-                    cleaned = prev !== currentQuery;
-                }
-
-                result = await fetchWithQuery(currentQuery);
-                attempts++;
-            } else {
-                break;
-            }
-        }
+        const result = await response.json();
 
         if (result.errors) {
             console.error('❌ GraphQL Errors for Specials:', JSON.stringify(result.errors, null, 2));
-            throw new Error(result.errors[0].message);
+            return null;
         }
 
         const node = result?.data?.specials?.nodes?.[0];
         if (!node) return null;
 
-        // Extract data with multiple potential field name versions
-        const fields = node.dailySpecials_Fields || node.daily_specials_fields || {};
+        const fields = node.dailySpecials || {};
 
         // Image extraction
-        const dailySpecialsField = fields.dailySpecials || fields.daily_specials;
-        const imageUrl = dailySpecialsField?.node?.sourceUrl || '';
+        const imageUrl = fields.dailySpecials?.node?.sourceUrl || '';
 
         // Date extraction
-        const dateText = fields.dateSpecials || fields.date_specials || '';
+        const rawDate = fields.dayOfSpecials || '';
+        const dateText = rawDate
+            ? new Date(rawDate).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            })
+            : '';
 
         return {
             imageUrl,
-            dateText
+            dateText,
         };
     } catch (error) {
         console.error('Error fetching specials from WordPress:', error);
+        return null;
+    }
+}
+
+export async function getSeasonalSpecials(): Promise<SeasonalSpecialData | null> {
+    const query = `
+        query GetSeasonalSpecials {
+            seasonalSpecials(first: 1) {
+                nodes {
+                    seasonalSpecials {
+                        seasonalSpecialsImage {
+                            node {
+                                sourceUrl
+                            }
+                        }
+                        seasonalSpecialsLabel
+                    }
+                }
+            }
+        }
+    `;
+
+    try {
+        const response = await fetch(WP_GRAPHQL_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query }),
+        });
+
+        const result = await response.json();
+
+        if (result.errors) {
+            console.error('❌ GraphQL Errors for Seasonal Specials:', JSON.stringify(result.errors, null, 2));
+            return null;
+        }
+
+        const node = result?.data?.seasonalSpecials?.nodes?.[0];
+        if (!node) return null;
+
+        const fields = node.seasonalSpecials || {};
+        const imageUrl = fields.seasonalSpecialsImage?.node?.sourceUrl || '';
+        const label = fields.seasonalSpecialsLabel || '';
+
+        return { imageUrl, label };
+    } catch (error) {
+        console.error('Error fetching seasonal specials from WordPress:', error);
         return null;
     }
 }

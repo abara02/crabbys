@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Music, Calendar, Clock, MapPin, Star, Utensils } from 'lucide-react';
-import { getDailySpecials, DailySpecialData } from '@/lib/wordpress';
+import { Leaf, Calendar, Clock, Star, Utensils } from 'lucide-react';
+import { getDailySpecials, DailySpecialData, getSeasonalSpecials, SeasonalSpecialData } from '@/lib/wordpress';
 
 interface MenuItem {
     name: string;
@@ -197,6 +197,8 @@ export default function MenuPage() {
     const [activeTab, setActiveTab] = useState("Main Menu");
     const [specials, setSpecials] = useState<DailySpecialData | null>(null);
     const [loadingSpecials, setLoadingSpecials] = useState(false);
+    const [seasonalSpecials, setSeasonalSpecials] = useState<SeasonalSpecialData | null>(null);
+    const [loadingSeasonal, setLoadingSeasonal] = useState(false);
 
     useEffect(() => {
         if (activeTab === "Daily Specials" && !specials) {
@@ -206,12 +208,20 @@ export default function MenuPage() {
                 setLoadingSpecials(false);
             });
         }
-    }, [activeTab, specials]);
+        if (activeTab === "Seasonal Specials" && !seasonalSpecials) {
+            setLoadingSeasonal(true);
+            getSeasonalSpecials().then(data => {
+                setSeasonalSpecials(data);
+                setLoadingSeasonal(false);
+            });
+        }
+    }, [activeTab, specials, seasonalSpecials]);
 
     const tabs = [
         { name: "Main Menu", icon: <Utensils size={18} /> },
         { name: "Kids Menu", icon: <Star size={18} /> },
         { name: "Brunch Menu", icon: <Clock size={18} /> },
+        { name: "Seasonal Specials", icon: <Leaf size={18} /> },
         { name: "Daily Specials", icon: <Calendar size={18} /> }
     ];
 
@@ -347,6 +357,67 @@ export default function MenuPage() {
                                         </h2>
                                     </div>
                                 </>
+                            )}
+                        </div>
+                    ) : activeTab === "Seasonal Specials" ? (
+                        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                            {loadingSeasonal ? (
+                                <div style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <div className="animate-pulse" style={{ color: 'var(--primary)', fontWeight: 'bold', letterSpacing: '2px' }}>LOADING SEASONAL SPECIALS...</div>
+                                </div>
+                            ) : seasonalSpecials?.imageUrl ? (
+                                <>
+                                    <img
+                                        src={seasonalSpecials.imageUrl}
+                                        alt="Seasonal Specials"
+                                        style={{
+                                            maxWidth: '800px',
+                                            width: '100%',
+                                            maxHeight: '70vh',
+                                            height: 'auto',
+                                            objectFit: 'contain',
+                                            boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                                            borderRadius: '12px'
+                                        }}
+                                        onError={(e) => {
+                                            const img = e.target as HTMLImageElement;
+                                            img.src = 'https://placehold.co/800x1000?text=Seasonal+Specials+Coming+Soon';
+                                        }}
+                                    />
+                                    {seasonalSpecials.label && (
+                                        <div style={{ marginTop: '2rem' }}>
+                                            <h2 style={{
+                                                fontFamily: 'var(--font-serif)',
+                                                fontSize: '1.2rem',
+                                                color: 'var(--accent)',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '2px',
+                                                margin: 0
+                                            }}>
+                                                {seasonalSpecials.label}
+                                            </h2>
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <div style={{
+                                    minHeight: '400px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '1rem',
+                                    color: 'var(--primary)',
+                                    opacity: 0.5
+                                }}>
+                                    <Leaf size={48} />
+                                    <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', fontStyle: 'italic', margin: 0 }}>
+                                        Seasonal specials coming soon!
+                                    </p>
+                                    <p style={{ fontSize: '0.9rem', margin: 0 }}>
+                                        Check back for our latest seasonal offerings.
+                                    </p>
+                                </div>
                             )}
                         </div>
                     ) : (
