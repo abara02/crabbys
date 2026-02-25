@@ -1,1 +1,1 @@
-Replace mobile gallery carousel with responsive puzzle collage grid
+Cleanup temporary files  
