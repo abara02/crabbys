@@ -284,8 +284,8 @@ export default function PrivateEventsPage() {
                         ))}
                     </div>
 
-                    {/* Mobile carousel */}
-                    <MobileCarousel />
+                    {/* Mobile puzzle collage gallery */}
+                    <MobileGallery />
                 </div>
             </div>
 
@@ -294,7 +294,11 @@ export default function PrivateEventsPage() {
                 .gallery-mobile  { display: none; }
                 @media (max-width: 768px) {
                     .gallery-desktop { display: none !important; }
-                    .gallery-mobile  { display: block !important; }
+                    .gallery-mobile  { 
+                        display: grid !important; 
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 10px;
+                    }
                 }
             `}</style>
         </div>
@@ -311,56 +315,39 @@ const GALLERY_IMAGES = [
     { src: '/pics/SHOTS.png', alt: 'Shots' },
 ];
 
-function MobileCarousel() {
-    const [current, setCurrent] = useState(0);
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrent(prev => (prev + 1) % GALLERY_IMAGES.length);
-        }, 3500);
-        return () => clearInterval(timer);
-    }, []);
-
-    const prev = () => setCurrent(p => (p - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length);
-    const next = () => setCurrent(p => (p + 1) % GALLERY_IMAGES.length);
-
+function MobileGallery() {
     return (
-        <div className="gallery-mobile" style={{ borderRadius: '12px', overflow: 'hidden', background: '#111' }}>
-            <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3' }}>
-                <img
-                    key={current}
-                    src={GALLERY_IMAGES[current].src}
-                    alt={GALLERY_IMAGES[current].alt}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
-                <button onClick={prev} style={{
-                    position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)',
-                    background: 'rgba(0,0,0,0.55)', color: 'white', border: 'none', borderRadius: '50%',
-                    width: '40px', height: '40px', fontSize: '1.4rem', cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center'
-                }}>&#8249;</button>
-                <button onClick={next} style={{
-                    position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
-                    background: 'rgba(0,0,0,0.55)', color: 'white', border: 'none', borderRadius: '50%',
-                    width: '40px', height: '40px', fontSize: '1.4rem', cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center'
-                }}>&#8250;</button>
-            </div>
-            {/* Dots */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', padding: '14px 0', background: '#0a0a0a' }}>
-                {GALLERY_IMAGES.map((_, i) => (
-                    <button key={i} onClick={() => setCurrent(i)} style={{
-                        width: i === current ? '20px' : '8px',
-                        height: '8px',
-                        borderRadius: '50px',
-                        background: i === current ? 'var(--accent)' : 'rgba(255,255,255,0.3)',
-                        border: 'none',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                        padding: 0
-                    }} />
-                ))}
-            </div>
+        <div className="gallery-mobile">
+            {GALLERY_IMAGES.map((img, i) => {
+                // Puzzle layout logic for 2 columns:
+                // Image 0 (SHOTS.png): spans 2 cols
+                // Image 1 & 2: 1 col each
+                // Image 3: spans 2 cols
+                // Image 4 & 5: 1 col each
+                // Image 6: spans 2 cols
+                const isFullWidth = i === 0 || i === 3 || i === 6;
+
+                return (
+                    <div key={i} style={{
+                        gridColumn: isFullWidth ? 'span 2' : 'span 1',
+                        height: isFullWidth ? '200px' : '160px',
+                        borderRadius: '10px',
+                        overflow: 'hidden',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+                    }}>
+                        <img
+                            src={img.src}
+                            alt={img.alt}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                display: 'block'
+                            }}
+                        />
+                    </div>
+                );
+            })}
         </div>
     );
 }
