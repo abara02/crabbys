@@ -538,7 +538,7 @@ export default function MenuPage() {
                     {activeTab === "Kids Menu" && (
                         <div style={{ textAlign: 'center', marginTop: '4rem', marginBottom: '2rem' }}>
                             <img
-                                src="/pics/kids-menu-crab.png"
+                                src="/pics/Kids Menu.png"
                                 alt="Kids Menu Illustration"
                                 style={{
                                     maxWidth: '500px',
