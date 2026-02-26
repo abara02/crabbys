@@ -24,25 +24,32 @@ const mainMenuData: MenuSection[] = [
             { name: "Crock of French Onion", price: "6.99", description: "" },
             { name: "Daily Soup", price: "Cup 3.99 | Bowl 4.99 | Pint To Go 7.99", description: "" },
             { name: "Lobster Bisque or New England Clam Chowder", price: "Cup 4.99 | Bowl 5.99 | Pint To Go 8.99", description: "" },
-            { name: "House Salad", price: "6.99", description: "Crisp fresh greens & garden vegetables served on the side" },
+            { name: "House Salad", price: "6.99", description: "Crisp fresh greens & garden vegetables.\nDressings: Balsamic Vinaigrette, Golden Italian, Honey Mustard, Parmesan Peppercorn, Ranch, Thousand Island." },
             { name: "Traditional Caesar Salad", price: "8.99", description: "Freshly chopped romaine hearts in rich Caesar dressing topped with crunchy croutons & parmesan cheese" }
         ],
-        footer: "Add to Any Salad (Blackened or Grilled): Chicken 8.99 | Shrimp 15.99 | Steak 15.99 | Swordfish 18.99 | Tuna 18.99"
+        footer: "Add to Any Salad (Blackened or Grilled): Chicken 8.99 | Shrimp 15.99 | Steak 15.99 | Salmon 18.99 | Swordfish 18.99 | Tuna 18.99"
+    },
+    {
+        category: "WINGS",
+        note: "Served with celery & (1) bleu cheese or ranch. Extra is .50",
+        items: [
+            { name: "Boneless Wings (5 pc)", price: "8.99", description: "" },
+            { name: "Boneless Wings (10 pc)", price: "15.99", description: "" },
+            { name: "Bone-In Wings (Dozen)", price: "20.99", description: "" }
+        ],
+        footer: "Flavor Choices: Bourbon, Buffalo, Carolina Gold, Honey Barbecue, & Garlic Parmesan (Only one flavor per order)"
     },
     {
         category: "APPETIZERS",
         items: [
-            { name: "Boneless Wings (5 pc)", price: "8.99", description: "Bourbon, Buffalo, Carolina Gold, Honey Barbecue, or Garlic Parmesan" },
-            { name: "Boneless Wings (10 pc)", price: "15.99", description: "Bourbon, Buffalo, Carolina Gold, Honey Barbecue, or Garlic Parmesan" },
-            { name: "Bone-In Wings (Dozen)", price: "20.99", description: "Served with celery & bleu cheese or ranch (Extra 1.50). One flavor per order." },
-            { name: "Chilled Shrimp Cocktail (6)", price: "14.99", description: "Peeled & jumbo shrimp on a bed of mixed greens" },
+            { name: "Chilled Shrimp Cocktail (6)", price: "14.99", description: "Peel & eat jumbo shrimp on a bed of mixed greens" },
             { name: "Clams Casino (6)", price: "13.99", description: "" },
-            { name: "Crabby’s Crab Cakes (2)", price: "Market Price", description: "Grilled crisp & served with remoulade sauce. Make it a meal with potato & vegetable (Market Price)." },
+            { name: "Crabby’s Crab Cakes (2)", price: "Market Price", description: "Grilled crisp & served with remoulade sauce. Make it a meal with choice of potato & vegetable (Market Price)." },
             { name: "Fried Calamari (10 oz)", price: "13.99", description: "Classic with marinara sauce" },
-            { name: "Fritti Fried Cherry Peppers & Gorgonzola", price: "15.99", description: "" },
-            { name: "Crabby Style Melted Gorgonzola", price: "15.99", description: "" },
+            { name: "Fritti", price: "15.99", description: "Fried Cherry Peppers & Gorgonzola" },
+            { name: "Crabby Style", price: "15.99", description: "Melted Gorgonzola Sauce & Cherry Peppers" },
             { name: "Stuffed Mushrooms (5)", price: "14.99", description: "With housemade lobster & crab stuffing" },
-            { name: "Garlic Bread", price: "4.99 (Plain 3.99)", description: "" },
+            { name: "Garlic Bread", price: "Cheese 4.99 | Plain 3.99", description: "" },
             { name: "Golden Coconut Shrimp (6)", price: "12.99", description: "Served with sweet & sour sauce" },
             { name: "Grilled Quesadilla", price: "Cheese 6.99 | Chicken 10.99 | Shrimp 13.99 | Steak 15.99", description: "" },
             { name: "Little Neck Clams", price: "15.99", description: "By the dozen raw or steamed" },
@@ -54,10 +61,10 @@ const mainMenuData: MenuSection[] = [
         category: "SANDWICHES",
         note: "All sandwiches served with a pickle & choice of French fries or house-made chips (Sweet potato fries +1.50 | GF rolls +2.50)",
         items: [
-            { name: "Black Angus Burger", price: "15.99", description: "½ lb on a toasted roll (Add cheese 1.00)" },
+            { name: "Black Angus Burger", price: "15.99", description: "½ lb of Angus beef on a toasted roll" },
             { name: "Buffalo Crispy Chicken Wrap", price: "15.99", description: "With bacon & cheese" },
             { name: "Crispy Chicken Sandwich", price: "14.99", description: "Topped with sriracha aioli" },
-            { name: "Fresh Fish Sandwich", price: "15.99", description: "Atlantic cod broiled or fried with tartar sauce" },
+            { name: "Fresh Fish Sandwich", price: "15.99", description: "Atlantic cod broiled or fried with tartar sauce on the side" },
             { name: "Grilled Chicken Sandwich", price: "14.99", description: "Blackened, barbecue, bourbon sauce, or grilled" },
             { name: "Ham Cubano", price: "14.99", description: "Ham, Swiss, pickles & mustard" },
             { name: "NY Strip Steak Sandwich", price: "17.99", description: "With sautéed mushrooms, onions & melted American cheese" },
@@ -68,22 +75,22 @@ const mainMenuData: MenuSection[] = [
     {
         category: "PASTA STATION",
         items: [
-            { name: "Chicken Francaise, Marsala or Piccata", price: "26.99", description: "Served over pasta or with potato & vegetable" },
+            { name: "Chicken Francaise(Egg Washed), Marsala or Piccata", price: "26.99", description: "Served over pasta or with potato & vegetable" },
             { name: "Chicken Parmesan", price: "27.99", description: "Breaded & fried over pasta" },
-            { name: "Chicken or Pork Milanese", price: "27.99 (Fra Diavolo 28.99)", description: "Lemon butter sauce over pasta topped with melted cheese" },
-            { name: "Linguini & Clams", price: "26.99", description: "Red or white garlic sauce" },
-            { name: "Mussels Over Linguini", price: "26.99", description: "Fra Diavolo or Lemon Garlic Butter" },
+            { name: "Chicken or Pork Milanese", price: "27.99 | (Fra Diavolo Style 28.99)", description: "Lemon butter sauce over pasta topped with melted cheese" },
+            { name: "Linguini & Clams", price: "26.99", description: "Tender baby clams & fresh little necks served in a red or white garlic sauce" },
+            { name: "Mussels Fra Diavolo or Lemon Garlic Butter sauce", price: "26.99", description: "Served over linguini" },
             { name: "Seafood Newburg", price: "Market Price", description: "Shrimp, scallops & lobster meat in savory lobster bisque sauce over penne" },
-            { name: "Shrimp Scampi", price: "28.99", description: "Lemon garlic sauce over angel hair pasta" }
+            { name: "Shrimp Scampi", price: "28.99", description: "Tender gulf shrimp cooked in a lemon garlic sauce with roasted red peppers over angel hair pasta" }
         ]
     },
     {
         category: "SEAFOOD ROLLS",
-        note: "Served on toasted New England rolls with choice of French fries or chips",
+        note: "Served on toasted New England rolls with choice of French fries or house-made chips",
         items: [
             { name: "Fried Scallop Roll (6 pc)", price: "23.99", description: "" },
             { name: "Clam Strip Roll (5 oz)", price: "18.99", description: "" },
-            { name: "Hot or Cold Lobster Roll (7 oz)", price: "Market Price", description: "" },
+            { name: "Hot or Cold Lobster Roll (7 oz)", price: "Market Price", description: "Hot  Lobster roll with side of drawn butter | Cold Lobster roll made to order" },
             { name: "Whole Belly Clam Roll (5 oz)", price: "Market Price", description: "" }
         ]
     },
@@ -91,12 +98,12 @@ const mainMenuData: MenuSection[] = [
         category: "FRIED SEAFOOD PLATTERS",
         note: "All served with French fries",
         items: [
-            { name: "Fish & Chips", price: "25.99", description: "" },
+            { name: "Fish & Chips", price: "25.99", description: "Fried fresh atlantic cod" },
             { name: "Fried Fish Platter", price: "26.99", description: "Clam strips, cod & shrimp" },
             { name: "Two Way Combo", price: "25.99", description: "Choice of any two: clam strips, cod, Gulf shrimp or calamari" },
             { name: "Clam Strips (8 oz)", price: "22.99", description: "" },
-            { name: "Coconut Shrimp (8 pc)", price: "18.99", description: "" },
-            { name: "Jumbo Gulf Shrimp (7 pc)", price: "24.99", description: "" },
+            { name: "Coconut Shrimp (8 PIECES)", price: "18.99", description: "" },
+            { name: "Jumbo Gulf Shrimp (7 PIECES)", price: "24.99", description: "" },
             { name: "Sea Scallops (8 oz)", price: "27.99", description: "" },
             { name: "Whole Bellies (8 oz)", price: "Market Price", description: "" }
         ]
@@ -105,21 +112,21 @@ const mainMenuData: MenuSection[] = [
         category: "FROM THE SEA",
         note: "All served with choice of potato & daily vegetable",
         items: [
-            { name: "Boston Baked Cod", price: "25.99", description: "" },
-            { name: "Broiled Sea Scallops", price: "29.99", description: "" },
-            { name: "Salmon Filet", price: "26.99", description: "" },
-            { name: "Stuffed Jumbo Gulf Shrimp (4)", price: "27.99", description: "" },
-            { name: "Stuffed Salmon or Swordfish", price: "30.99", description: "" },
-            { name: "Swordfish Steak", price: "26.99", description: "" },
-            { name: "Yellowfin Tuna", price: "28.99", description: "" }
+            { name: "Boston Baked Cod", price: "25.99", description: "Tender atlantic cod baked with cracker crumbs" },
+            { name: "Broiled Sea Scallops", price: "29.99", description: "Jumbo atlantic scallops baked in a butter sauce topped with cracker crumbs" },
+            { name: "Salmon Filet", price: "26.99", description: "Grilled or blackend. Served medium unless otherwise requested" },
+            { name: "Stuffed Jumbo Gulf Shrimp (4)", price: "27.99", description: "Jumbo gulf shrimp stuffed with our housemade crab stuffing" },
+            { name: "Stuffed Salmon or Swordfish", price: "30.99", description: "Stuffed with our housemade crab stuffing" },
+            { name: "Swordfish Steak", price: "26.99", description: "Served blackened or grilled" },
+            { name: "Yellowfin Tuna", price: "28.99", description: "Served blackened,grilled, or seasake encrusted. Served medium unless otherwise requested" }
         ]
     },
     {
         category: "NOT FISH",
         note: "All served with choice of potato & daily vegetable",
         items: [
-            { name: "NY Strip or Ribeye (14 oz)", price: "Market Price", description: "" },
-            { name: "Maple Dijon Pork Chops", price: "30.99", description: "" }
+            { name: "NY Strip or Ribeye (14 oz)", price: "Market Price", description: "cooked to your liking" },
+            { name: "Maple Dijon Pork Chops", price: "30.99", description: "light maple dijon sauce over tender bone in pork chops" }
         ]
     },
     {
@@ -139,15 +146,15 @@ const mainMenuData: MenuSection[] = [
 
 const kidsMenuData: MenuSection[] = [
     {
-        category: "KIDS SELECTIONS",
-        note: "For our friends 12 and under. All meals include choice of French fries or chips.",
+        category: "KIDS MENU",
+        note: "For our friends 12 and under. All meals served with french fries.",
         items: [
-            { name: "Chicken Tenders (3)", price: "8.99", description: "Crispy breaded chicken strips with honey mustard or BBQ sauce." },
-            { name: "Grilled Cheese", price: "7.99", description: "Buttery toasted bread with melted American cheese." },
-            { name: "Fried Shrimp (5)", price: "10.99", description: "Golden fried jumbo shrimp." },
-            { name: "Hot Dog", price: "6.99", description: "All-beef hot dog on a toasted roll." },
-            { name: "Pasta", price: "7.99", description: "Choice of Penne or Linguini with butter or marinara sauce." },
-            { name: "Fish & Chips Junior", price: "12.99", description: "Smaller portion of our famous golden fried cod." }
+            { name: "Grilled Cheese", price: "4.99", description: "" },
+            { name: "Hamburger", price: "4.99", description: "" },
+            { name: "Cheeseburger", price: "5.99", description: "" },
+            { name: "Hot Diggity Dog", price: "4.99", description: "" },
+            { name: "Mac & Cheese", price: "4.99", description: "" },
+            { name: "Fish Sticks", price: "5.99", description: "" }
         ]
     }
 ];
@@ -197,7 +204,7 @@ export default function MenuPage() {
     const [activeTab, setActiveTab] = useState("Main Menu");
     const [specials, setSpecials] = useState<DailySpecialData | null>(null);
     const [loadingSpecials, setLoadingSpecials] = useState(false);
-    const [seasonalSpecials, setSeasonalSpecials] = useState<SeasonalSpecialData | null>(null);
+    const [seasonalSpecials, setSeasonalSpecials] = useState<SeasonalSpecialData[]>([]);
     const [loadingSeasonal, setLoadingSeasonal] = useState(false);
 
     useEffect(() => {
@@ -208,14 +215,14 @@ export default function MenuPage() {
                 setLoadingSpecials(false);
             });
         }
-        if (activeTab === "Seasonal Specials" && !seasonalSpecials) {
+        if (activeTab === "Seasonal Specials" && seasonalSpecials.length === 0) {
             setLoadingSeasonal(true);
             getSeasonalSpecials().then(data => {
                 setSeasonalSpecials(data);
                 setLoadingSeasonal(false);
             });
         }
-    }, [activeTab, specials, seasonalSpecials]);
+    }, [activeTab, specials, seasonalSpecials.length]);
 
     const tabs = [
         { name: "Main Menu", icon: <Utensils size={18} /> },
@@ -365,40 +372,56 @@ export default function MenuPage() {
                                 <div style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <div className="animate-pulse" style={{ color: 'var(--primary)', fontWeight: 'bold', letterSpacing: '2px' }}>LOADING SEASONAL SPECIALS...</div>
                                 </div>
-                            ) : seasonalSpecials?.imageUrl ? (
-                                <>
-                                    <img
-                                        src={seasonalSpecials.imageUrl}
-                                        alt="Seasonal Specials"
-                                        style={{
-                                            maxWidth: '800px',
+                            ) : seasonalSpecials.length > 0 ? (
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                                    gap: '3rem',
+                                    justifyItems: 'center',
+                                    width: '100%',
+                                    maxWidth: '1200px',
+                                    margin: '0 auto'
+                                }}>
+                                    {seasonalSpecials.map((special, index) => (
+                                        <div key={index} style={{
                                             width: '100%',
-                                            maxHeight: '70vh',
-                                            height: 'auto',
-                                            objectFit: 'contain',
-                                            boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                                            borderRadius: '12px'
-                                        }}
-                                        onError={(e) => {
-                                            const img = e.target as HTMLImageElement;
-                                            img.src = 'https://placehold.co/800x1000?text=Seasonal+Specials+Coming+Soon';
-                                        }}
-                                    />
-                                    {seasonalSpecials.label && (
-                                        <div style={{ marginTop: '2rem' }}>
-                                            <h2 style={{
-                                                fontFamily: 'var(--font-serif)',
-                                                fontSize: '1.2rem',
-                                                color: 'var(--accent)',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '2px',
-                                                margin: 0
-                                            }}>
-                                                {seasonalSpecials.label}
-                                            </h2>
+                                            maxWidth: '500px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: '1.5rem',
+                                            textAlign: 'center'
+                                        }}>
+                                            {special.label && (
+                                                <h2 style={{
+                                                    fontFamily: 'var(--font-serif)',
+                                                    fontSize: '1.6rem',
+                                                    color: 'var(--primary)',
+                                                    letterSpacing: '0.5px',
+                                                    margin: 0,
+                                                    fontWeight: '600'
+                                                }}>
+                                                    {special.label}
+                                                </h2>
+                                            )}
+                                            <img
+                                                src={special.imageUrl}
+                                                alt={special.label || "Seasonal Special"}
+                                                style={{
+                                                    width: '100%',
+                                                    height: 'auto',
+                                                    maxHeight: '70vh',
+                                                    objectFit: 'contain',
+                                                    boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                                                    borderRadius: '12px'
+                                                }}
+                                                onError={(e) => {
+                                                    const img = e.target as HTMLImageElement;
+                                                    img.src = 'https://placehold.co/800x1000?text=Seasonal+Special';
+                                                }}
+                                            />
                                         </div>
-                                    )}
-                                </>
+                                    ))}
+                                </div>
                             ) : (
                                 <div style={{
                                     minHeight: '400px',
@@ -476,7 +499,7 @@ export default function MenuPage() {
                                                     {item.price}
                                                 </div>
                                             </div>
-                                            {item.description && <p style={{ opacity: 0.8, fontSize: '0.85rem', margin: 0 }}>{item.description}</p>}
+                                            {item.description && <p style={{ opacity: 0.8, fontSize: '0.85rem', margin: 0, whiteSpace: 'pre-line' }}>{item.description}</p>}
                                         </div>
                                     ))}
                                 </div>
@@ -496,6 +519,35 @@ export default function MenuPage() {
                                 )}
                             </div>
                         ))
+                    )}
+
+                    {activeTab === "Main Menu" && (
+                        <div style={{
+                            textAlign: 'center',
+                            marginTop: '2rem',
+                            marginBottom: '2rem',
+                            fontStyle: 'italic',
+                            color: 'var(--primary)',
+                            fontSize: '1.2rem',
+                            fontWeight: '600'
+                        }}>
+                            Ask about Crabby Al’s daily house made desserts!
+                        </div>
+                    )}
+
+                    {activeTab === "Kids Menu" && (
+                        <div style={{ textAlign: 'center', marginTop: '4rem', marginBottom: '2rem' }}>
+                            <img
+                                src="/pics/kids-menu-crab.png"
+                                alt="Kids Menu Illustration"
+                                style={{
+                                    maxWidth: '500px',
+                                    width: '100%',
+                                    height: 'auto',
+                                    borderRadius: '20px'
+                                }}
+                            />
+                        </div>
                     )}
                 </div>
 

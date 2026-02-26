@@ -8,6 +8,7 @@ export interface DailySpecialData {
 export interface SeasonalSpecialData {
     imageUrl: string;
     label: string;
+    endDate?: string;
 }
 
 export async function getDailySpecials(): Promise<DailySpecialData | null> {
@@ -73,18 +74,19 @@ export async function getDailySpecials(): Promise<DailySpecialData | null> {
     }
 }
 
-export async function getSeasonalSpecials(): Promise<SeasonalSpecialData | null> {
+export async function getSeasonalSpecials(): Promise<SeasonalSpecialData[]> {
     const query = `
         query GetSeasonalSpecials {
-            seasonalSpecials(first: 1) {
+            seasonalSpecials(first: 10) {
                 nodes {
                     seasonalSpecials {
-                        seasonalSpecialsImage {
+                        menuTitle
+                        addSeasonSpecials {
                             node {
                                 sourceUrl
                             }
                         }
-                        seasonalSpecialsLabel
+                        endDate
                     }
                 }
             }
@@ -102,19 +104,37 @@ export async function getSeasonalSpecials(): Promise<SeasonalSpecialData | null>
 
         if (result.errors) {
             console.error('❌ GraphQL Errors for Seasonal Specials:', JSON.stringify(result.errors, null, 2));
-            return null;
+            return [];
         }
 
-        const node = result?.data?.seasonalSpecials?.nodes?.[0];
-        if (!node) return null;
+        const nodes = result?.data?.seasonalSpecials?.nodes || [];
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
-        const fields = node.seasonalSpecials || {};
-        const imageUrl = fields.seasonalSpecialsImage?.node?.sourceUrl || '';
-        const label = fields.seasonalSpecialsLabel || '';
+        const specials: SeasonalSpecialData[] = nodes
+            .map((node: any) => {
+                const fields = node.seasonalSpecials || {};
 
-        return { imageUrl, label };
+                // Expiration Logic
+                if (fields.endDate) {
+                    const expirationDate = new Date(fields.endDate);
+                    if (today > expirationDate) {
+                        return null;
+                    }
+                }
+
+                const imageUrl = fields.addSeasonSpecials?.node?.sourceUrl || '';
+                const label = fields.menuTitle || '';
+
+                if (!imageUrl) return null;
+
+                return { imageUrl, label };
+            })
+            .filter((special: any): special is SeasonalSpecialData => special !== null);
+
+        return specials;
     } catch (error) {
         console.error('Error fetching seasonal specials from WordPress:', error);
-        return null;
+        return [];
     }
 }

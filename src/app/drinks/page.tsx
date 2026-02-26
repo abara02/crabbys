@@ -54,24 +54,20 @@ export default function DrinksPage() {
                     <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(3rem, 8vw, 4.5rem)', marginBottom: '1.5rem' }}>Drinks Menu</h1>
 
                     <div style={{
-                        display: 'inline-flex',
-                        flexDirection: 'column',
-                        gap: '1rem',
-                        padding: '2rem',
-                        background: 'var(--white)',
-                        borderRadius: '12px',
-                        boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                        fontSize: '1.2rem',
+                        color: 'var(--primary)',
+                        fontWeight: '600',
+                        marginTop: '-1rem',
                         marginBottom: '2rem',
-                        border: '1px solid rgba(0,0,0,0.05)'
+                        fontStyle: 'italic',
+                        opacity: 0.9,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.25rem'
                     }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: 'bold' }}>
-                            <Clock size={20} color="var(--accent)" />
-                            <span>BAR HOURS</span>
-                        </div>
-                        <div style={{ display: 'grid', gap: '0.5rem', fontSize: '0.95rem' }}>
-                            <div><strong>SUN – THU:</strong> 11AM–1AM</div>
-                            <div><strong>FRI & SAT:</strong> 11AM–2AM</div>
-                        </div>
+                        <div>Bar Hours</div>
+                        <div>Sunday–Thursday: 11am–1am</div>
+                        <div>Friday–Saturday: 11am–2am</div>
                     </div>
                 </div>
 
