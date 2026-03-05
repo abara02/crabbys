@@ -309,7 +309,7 @@ function DrinksPageContent() {
         <div style={{ minHeight: '100vh', background: 'var(--background)' }}>
             {/* Hero Section */}
             <div style={{
-                height: '30vh',
+                height: '38vh', // Adjusted height
                 width: '100%',
                 position: 'relative',
                 display: 'flex',
@@ -322,6 +322,10 @@ function DrinksPageContent() {
                     top: 0, left: 0, width: '100%', height: '100%',
                     backgroundImage: 'url("/pics/drinks hero.png")',
                     backgroundSize: 'cover',
+                    // 👇 MODIFY THIS TO MOVE THE IMAGE UP OR DOWN 
+                    // 'center' keeps it centered. 
+                    // 'center 20%' moves it up (shows more of the bottom).
+                    // 'center 80%' moves it down (shows more of the top).
                     backgroundPosition: 'center',
                     zIndex: 0
                 }}></div>
