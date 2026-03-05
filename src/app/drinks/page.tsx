@@ -373,13 +373,30 @@ export default function DrinksPage() {
                                             background: 'rgba(0,0,0,0.1)',
                                             zIndex: 0
                                         }}></div>
+                                        <p style={{
+                                            fontStyle: 'italic',
+                                            opacity: 0.8,
+                                            marginTop: '0.75rem',
+                                            fontSize: '0.95rem',
+                                            lineHeight: '1.6',
+                                            whiteSpace: 'pre-line',
+                                            maxWidth: '600px',
+                                            marginLeft: 'auto',
+                                            marginRight: 'auto'
+                                        }}>
+                                            16 Rotating Taps{'\n'}
+                                            Beer list changes quickly, we will try to update several times a week! 🍻{'\n\n'}
+                                            Our staples we have on tap are:{'\n'}
+                                            Bud Light, Yuengling, Guinness{'\n\n'}
+                                            All others rotate
+                                        </p>
                                     </div>
                                     <img
                                         src={beerListImage.imageUrl}
                                         alt={beerListImage.title}
                                         style={{
                                             maxWidth: '100%',
-                                            width: '800px',
+                                            width: '400px',
                                             borderRadius: '12px',
                                             boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
                                         }}
