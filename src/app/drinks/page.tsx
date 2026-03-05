@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { GlassWater, Wine, Beer, Leaf, Martini } from 'lucide-react';
-import { getBeerListImage, BeerListData } from '@/lib/wordpress';
+import { getBeerListImage, BeerListData, getSeasonalDrinkImages, SeasonalDrinkData } from '@/lib/wordpress';
 
 interface DrinkItem {
     name: string;
@@ -129,7 +129,7 @@ const beerData: DrinkSection[] = [
         ]
     },
     {
-        category: "Non-Alcohol",
+        category: "Non-Alcoholic",
         items: [
             { name: "Bud Zero NA", price: "", description: "" },
             { name: "Corona NA", price: "", description: "" },
@@ -168,7 +168,6 @@ const wineData: DrinkSection[] = [
     }
 ];
 
-// ── Seasonal Drinks ──
 const seasonalData: DrinkSection[] = [
     {
         category: "Seasonal Drinks",
@@ -265,6 +264,8 @@ export default function DrinksPage() {
     const [activeTab, setActiveTab] = useState("Cocktails & Spirits");
     const [beerListImage, setBeerListImage] = useState<BeerListData | null>(null);
     const [loadingBeer, setLoadingBeer] = useState(false);
+    const [seasonalImages, setSeasonalImages] = useState<SeasonalDrinkData[]>([]);
+    const [loadingSeasonal, setLoadingSeasonal] = useState(false);
     const data = getTabData(activeTab);
     const cols = getColumnCount(activeTab);
     const isGrid = cols > 1;
@@ -279,6 +280,16 @@ export default function DrinksPage() {
             });
         }
     }, [activeTab, beerListImage]);
+
+    useEffect(() => {
+        if (activeTab === "Seasonal Drinks" && seasonalImages.length === 0) {
+            setLoadingSeasonal(true);
+            getSeasonalDrinkImages().then(data => {
+                setSeasonalImages(data);
+                setLoadingSeasonal(false);
+            });
+        }
+    }, [activeTab, seasonalImages.length]);
 
     return (
         <div className="section" style={{ minHeight: '100vh', background: 'var(--background)', paddingTop: '4rem' }}>
@@ -385,10 +396,7 @@ export default function DrinksPage() {
                                             marginRight: 'auto'
                                         }}>
                                             16 Rotating Taps{'\n'}
-                                            Beer list changes quickly, we will try to update several times a week! 🍻{'\n\n'}
-                                            Our staples we have on tap are:{'\n'}
-                                            Bud Light, Yuengling, Guinness{'\n\n'}
-                                            All others rotate
+                                            Beer list changes quickly, we will try to update several times a week! 🍻
                                         </p>
                                     </div>
                                     <img
@@ -403,6 +411,51 @@ export default function DrinksPage() {
                                     />
                                 </div>
                             ) : null}
+                        </div>
+                    )}
+                    {activeTab === "Seasonal Drinks" && (
+                        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                            {loadingSeasonal ? (
+                                <p style={{ opacity: 0.6, fontStyle: 'italic' }}>Loading seasonal drinks...</p>
+                            ) : seasonalImages.length > 0 ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3rem' }}>
+                                    {seasonalImages.map((drink, idx) => (
+                                        <div key={idx}>
+                                            {drink.title && drink.title !== 'Seasonal Drink' && (
+                                                <h3 style={{
+                                                    fontFamily: 'var(--font-serif)',
+                                                    fontSize: '1.5rem',
+                                                    color: 'var(--primary)',
+                                                    marginBottom: '1rem',
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '2px'
+                                                }}>
+                                                    {drink.title}
+                                                </h3>
+                                            )}
+                                            <img
+                                                src={drink.imageUrl}
+                                                alt={drink.title}
+                                                style={{
+                                                    maxWidth: '100%',
+                                                    width: '500px',
+                                                    borderRadius: '12px',
+                                                    boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
+                                                }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div>
+                                    <p style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '0.5rem' }}>
+                                        Check back for our seasonal offerings!
+                                    </p>
+                                    <p style={{ opacity: 0.7, fontSize: '0.95rem' }}>
+                                        Our seasonal drink menu rotates throughout the year. Ask your server for current selections.
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     )}
                     {activeTab === "Wine" && (
@@ -455,7 +508,7 @@ export default function DrinksPage() {
                             <div>{renderSections(cocktailsLeftCol)}</div>
                             <div>{renderSections(cocktailsRightCol)}</div>
                         </div>
-                    ) : (
+                    ) : activeTab !== "Seasonal Drinks" ? (
                         <div className={isGrid ? 'drinks-columns' : ''} style={{
                             display: isGrid ? 'grid' : 'block',
                             gridTemplateColumns: isGrid ? `repeat(${cols}, 1fr)` : undefined,
@@ -464,7 +517,7 @@ export default function DrinksPage() {
                         }}>
                             {renderSections(data)}
                         </div>
-                    )}
+                    ) : null}
                 </div>
 
                 <div style={{

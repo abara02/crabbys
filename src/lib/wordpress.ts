@@ -190,3 +190,56 @@ export async function getBeerListImage(): Promise<BeerListData | null> {
         return null;
     }
 }
+
+export interface SeasonalDrinkData {
+    imageUrl: string;
+    title: string;
+}
+
+export async function getSeasonalDrinkImages(): Promise<SeasonalDrinkData[]> {
+    const query = `
+        query GetSeasonalDrinks {
+            seasonalDrinksMenu(first: 10) {
+                nodes {
+                    title
+                    drinksMenu {
+                        uploadSeasonalDrinkMenu {
+                            node {
+                                sourceUrl
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    `;
+
+    try {
+        const response = await fetch(WP_GRAPHQL_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query }),
+        });
+
+        const result = await response.json();
+
+        if (result.errors) {
+            console.error('❌ GraphQL Errors for Seasonal Drinks:', JSON.stringify(result.errors, null, 2));
+            return [];
+        }
+
+        const nodes = result?.data?.seasonalDrinksMenu?.nodes || [];
+
+        return nodes
+            .map((node: any) => {
+                const imageUrl = node.drinksMenu?.uploadSeasonalDrinkMenu?.node?.sourceUrl || '';
+                const title = node.title || 'Seasonal Drink';
+                if (!imageUrl) return null;
+                return { imageUrl, title };
+            })
+            .filter((item: any): item is SeasonalDrinkData => item !== null);
+    } catch (error) {
+        console.error('Error fetching seasonal drinks from WordPress:', error);
+        return [];
+    }
+}
