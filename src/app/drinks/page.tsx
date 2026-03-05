@@ -306,251 +306,295 @@ function DrinksPageContent() {
     }, [activeTab, seasonalImages.length]);
 
     return (
-        <div className="section" style={{ minHeight: '100vh', background: 'var(--background)', paddingTop: '4rem' }}>
-            <div className="container" style={{ maxWidth: '1200px' }}>
-                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <img src="/logo_with_text.png" alt="Crabby Al's Logo" style={{ height: '150px', width: 'auto', marginBottom: '2rem' }} />
-
-                    {/* Tab Navigation */}
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        flexWrap: 'wrap',
-                        gap: '1rem',
-                        marginBottom: '4rem'
-                    }}>
-                        {tabs.map((tab) => (
-                            <button
-                                key={tab.name}
-                                onClick={() => setActiveTab(tab.name)}
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '0.75rem',
-                                    padding: '0.75rem 1.5rem',
-                                    borderRadius: '50px',
-                                    border: 'none',
-                                    background: activeTab === tab.name ? 'var(--primary)' : 'var(--white)',
-                                    color: activeTab === tab.name ? 'white' : 'var(--primary)',
-                                    fontWeight: 'bold',
-                                    cursor: 'pointer',
-                                    transition: 'var(--transition)',
-                                    boxShadow: activeTab === tab.name ? '0 10px 20px rgba(10, 61, 98, 0.2)' : '0 4px 10px rgba(0,0,0,0.05)',
-                                    fontSize: '0.9rem'
-                                }}
-                            >
-                                {tab.icon}
-                                {tab.name}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div style={{
-                        fontSize: '1.2rem',
-                        color: 'var(--primary)',
-                        fontWeight: '600',
-                        marginTop: '-1rem',
-                        marginBottom: '2rem',
-                        fontStyle: 'italic',
-                        opacity: 0.9,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.25rem'
-                    }}>
-                        <div>Bar Hours</div>
-                        <div>Sunday–Thursday: 11am–1am</div>
-                        <div>Friday–Saturday: 11am–2am</div>
-                    </div>
-                </div>
-
-                <div key={activeTab} className="fade-in">
-                    {activeTab === "Beer" && (
-                        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                            {loadingBeer ? (
-                                <p style={{ opacity: 0.6, fontStyle: 'italic' }}>Loading draft beer list...</p>
-                            ) : beerListImage ? (
-                                <div>
-                                    <div style={{
-                                        textAlign: 'center',
-                                        marginBottom: '1.5rem',
-                                        position: 'relative'
-                                    }}>
-                                        <h2 style={{
-                                            fontFamily: 'var(--font-serif)',
-                                            fontSize: '2.5rem',
-                                            color: 'var(--primary)',
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '3px',
-                                            display: 'inline-block',
-                                            background: 'var(--background)',
-                                            padding: '0 1.5rem',
-                                            position: 'relative',
-                                            zIndex: 1
-                                        }}>
-                                            {beerListImage.title}
-                                        </h2>
-                                        <div style={{
-                                            position: 'absolute',
-                                            top: '50%',
-                                            left: 0,
-                                            right: 0,
-                                            height: '1px',
-                                            background: 'rgba(0,0,0,0.1)',
-                                            zIndex: 0
-                                        }}></div>
-                                        <p style={{
-                                            fontStyle: 'italic',
-                                            opacity: 0.8,
-                                            marginTop: '0.75rem',
-                                            fontSize: '0.95rem',
-                                            lineHeight: '1.6',
-                                            whiteSpace: 'pre-line',
-                                            maxWidth: '600px',
-                                            marginLeft: 'auto',
-                                            marginRight: 'auto'
-                                        }}>
-                                            16 Rotating Taps{'\n'}
-                                            Beer list changes quickly, we will try to update several times a week! 🍻
-                                        </p>
-                                    </div>
-                                    <img
-                                        src={beerListImage.imageUrl}
-                                        alt={beerListImage.title}
-                                        style={{
-                                            maxWidth: '100%',
-                                            width: '400px',
-                                            borderRadius: '12px',
-                                            boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
-                                        }}
-                                    />
-                                </div>
-                            ) : null}
-                        </div>
-                    )}
-                    {activeTab === "Seasonal Drinks" && (
-                        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                            {loadingSeasonal ? (
-                                <p style={{ opacity: 0.6, fontStyle: 'italic' }}>Loading seasonal drinks...</p>
-                            ) : seasonalImages.length > 0 ? (
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3rem' }}>
-                                    {seasonalImages.map((drink, idx) => (
-                                        <div key={idx}>
-                                            {drink.title && drink.title !== 'Seasonal Drink' && (
-                                                <h3 style={{
-                                                    fontFamily: 'var(--font-serif)',
-                                                    fontSize: '1.5rem',
-                                                    color: 'var(--primary)',
-                                                    marginBottom: '1rem',
-                                                    textTransform: 'uppercase',
-                                                    letterSpacing: '2px'
-                                                }}>
-                                                    {drink.title}
-                                                </h3>
-                                            )}
-                                            <img
-                                                src={drink.imageUrl}
-                                                alt={drink.title}
-                                                style={{
-                                                    maxWidth: '100%',
-                                                    width: '400px',
-                                                    borderRadius: '12px',
-                                                    boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
-                                                }}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div>
-                                    <p style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '0.5rem' }}>
-                                        Check back for our seasonal offerings!
-                                    </p>
-                                    <p style={{ opacity: 0.7, fontSize: '0.95rem' }}>
-                                        Our seasonal drink menu rotates throughout the year. Ask your server for current selections.
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                    )}
-                    {activeTab === "Wine" && (
-                        <div style={{
-                            textAlign: 'center',
-                            marginBottom: '3rem',
-                            position: 'relative'
-                        }}>
-                            <h2 style={{
-                                fontFamily: 'var(--font-serif)',
-                                fontSize: '2.5rem',
-                                color: 'var(--primary)',
-                                textTransform: 'uppercase',
-                                letterSpacing: '3px',
-                                display: 'inline-block',
-                                background: 'var(--background)',
-                                padding: '0 1.5rem',
-                                position: 'relative',
-                                zIndex: 1
-                            }}>
-                                Wines
-                            </h2>
-                            <div style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: 0,
-                                right: 0,
-                                height: '1px',
-                                background: 'rgba(0,0,0,0.1)',
-                                zIndex: 0
-                            }}></div>
-                            <p style={{
-                                fontStyle: 'italic',
-                                opacity: 0.7,
-                                marginTop: '0.5rem',
-                                fontSize: '0.95rem'
-                            }}>
-                                All specialty wines are available by the glass or by the bottle. House wine by the glass only.
-                            </p>
-                        </div>
-                    )}
-
-                    {isCocktails ? (
-                        <div className="drinks-columns" style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr 1fr',
-                            gap: '3rem',
-                            alignItems: 'start'
-                        }}>
-                            <div>{renderSections(cocktailsLeftCol)}</div>
-                            <div>{renderSections(cocktailsRightCol)}</div>
-                        </div>
-                    ) : activeTab !== "Seasonal Drinks" ? (
-                        <div className={isGrid ? 'drinks-columns' : ''} style={{
-                            display: isGrid ? 'grid' : 'block',
-                            gridTemplateColumns: isGrid ? `repeat(${cols}, 1fr)` : undefined,
-                            gap: '2rem',
-                            alignItems: 'start'
-                        }}>
-                            {renderSections(data)}
-                        </div>
-                    ) : null}
-                </div>
-
+        <div style={{ minHeight: '100vh', background: 'var(--background)' }}>
+            {/* Hero Section */}
+            <div style={{
+                height: '60vh',
+                width: '100%',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden'
+            }}>
                 <div style={{
-                    marginTop: '4rem',
-                    padding: '3rem 2rem',
-                    background: 'var(--primary)',
-                    color: 'white',
-                    borderRadius: '16px',
-                    textAlign: 'center',
-                    boxShadow: '0 20px 40px rgba(10, 61, 98, 0.2)',
-                    marginBottom: '4rem'
-                }}>
-                    <h2 style={{ color: 'white', fontFamily: 'var(--font-serif)', fontSize: '2rem', marginBottom: '1rem' }}>Sip, Relax, Repeat.</h2>
-                    <p style={{ opacity: 0.9, maxWidth: '600px', margin: '0 auto 2rem' }}>
-                        Join us for Happy Hour or enjoy a drink by the water. Our selection of craft cocktails and local brews is always rotating.
-                    </p>
+                    position: 'absolute',
+                    top: 0, left: 0, width: '100%', height: '100%',
+                    backgroundImage: 'url("/pics/drinks hero.png")',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    zIndex: 0
+                }}></div>
+                <div style={{
+                    position: 'absolute',
+                    top: 0, left: 0, width: '100%', height: '100%',
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)',
+                    zIndex: 1
+                }}></div>
+
+                <div style={{ position: 'relative', zIndex: 3, textAlign: 'center' }}>
+                    <h1 style={{
+                        fontFamily: 'var(--font-serif)',
+                        fontSize: '4.5rem',
+                        marginBottom: '0.5rem',
+                        color: 'white',
+                        opacity: 0.85,
+                        textShadow: '0 4px 20px rgba(0,0,0,0.5)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '4px'
+                    }}>
+                        Drinks
+                    </h1>
+                    <div style={{ width: '100px', height: '4px', background: 'white', margin: '0 auto' }}></div>
                 </div>
             </div>
-            <style jsx>{`
+
+            {/* Content Section */}
+            <div className="section" style={{ paddingTop: '4rem' }}>
+                <div className="container" style={{ maxWidth: '1200px' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                        <img src="/logo_with_text.png" alt="Crabby Al's Logo" style={{ height: '150px', width: 'auto', marginBottom: '2rem' }} />
+
+                        {/* Tab Navigation */}
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            flexWrap: 'wrap',
+                            gap: '1rem',
+                            marginBottom: '4rem'
+                        }}>
+                            {tabs.map((tab) => (
+                                <button
+                                    key={tab.name}
+                                    onClick={() => setActiveTab(tab.name)}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.75rem',
+                                        padding: '0.75rem 1.5rem',
+                                        borderRadius: '50px',
+                                        border: 'none',
+                                        background: activeTab === tab.name ? 'var(--primary)' : 'var(--white)',
+                                        color: activeTab === tab.name ? 'white' : 'var(--primary)',
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer',
+                                        transition: 'var(--transition)',
+                                        boxShadow: activeTab === tab.name ? '0 10px 20px rgba(10, 61, 98, 0.2)' : '0 4px 10px rgba(0,0,0,0.05)',
+                                        fontSize: '0.9rem'
+                                    }}
+                                >
+                                    {tab.icon}
+                                    {tab.name}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div style={{
+                            fontSize: '1.2rem',
+                            color: 'var(--primary)',
+                            fontWeight: '600',
+                            marginTop: '-1rem',
+                            marginBottom: '2rem',
+                            fontStyle: 'italic',
+                            opacity: 0.9,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.25rem'
+                        }}>
+                            <div>Bar Hours</div>
+                            <div>Sunday–Thursday: 11am–1am</div>
+                            <div>Friday–Saturday: 11am–2am</div>
+                        </div>
+                    </div>
+
+                    <div key={activeTab} className="fade-in">
+                        {activeTab === "Beer" && (
+                            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                                {loadingBeer ? (
+                                    <p style={{ opacity: 0.6, fontStyle: 'italic' }}>Loading draft beer list...</p>
+                                ) : beerListImage ? (
+                                    <div>
+                                        <div style={{
+                                            textAlign: 'center',
+                                            marginBottom: '1.5rem',
+                                            position: 'relative'
+                                        }}>
+                                            <h2 style={{
+                                                fontFamily: 'var(--font-serif)',
+                                                fontSize: '2.5rem',
+                                                color: 'var(--primary)',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '3px',
+                                                display: 'inline-block',
+                                                background: 'var(--background)',
+                                                padding: '0 1.5rem',
+                                                position: 'relative',
+                                                zIndex: 1
+                                            }}>
+                                                {beerListImage.title}
+                                            </h2>
+                                            <div style={{
+                                                position: 'absolute',
+                                                top: '50%',
+                                                left: 0,
+                                                right: 0,
+                                                height: '1px',
+                                                background: 'rgba(0,0,0,0.1)',
+                                                zIndex: 0
+                                            }}></div>
+                                            <p style={{
+                                                fontStyle: 'italic',
+                                                opacity: 0.8,
+                                                marginTop: '0.75rem',
+                                                fontSize: '0.95rem',
+                                                lineHeight: '1.6',
+                                                whiteSpace: 'pre-line',
+                                                maxWidth: '600px',
+                                                marginLeft: 'auto',
+                                                marginRight: 'auto'
+                                            }}>
+                                                16 Rotating Taps{'\n'}
+                                                Beer list changes quickly, we will try to update several times a week! 🍻
+                                            </p>
+                                        </div>
+                                        <img
+                                            src={beerListImage.imageUrl}
+                                            alt={beerListImage.title}
+                                            style={{
+                                                maxWidth: '100%',
+                                                width: '400px',
+                                                borderRadius: '12px',
+                                                boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
+                                            }}
+                                        />
+                                    </div>
+                                ) : null}
+                            </div>
+                        )}
+                        {activeTab === "Seasonal Drinks" && (
+                            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                                {loadingSeasonal ? (
+                                    <p style={{ opacity: 0.6, fontStyle: 'italic' }}>Loading seasonal drinks...</p>
+                                ) : seasonalImages.length > 0 ? (
+                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3rem' }}>
+                                        {seasonalImages.map((drink, idx) => (
+                                            <div key={idx}>
+                                                {drink.title && drink.title !== 'Seasonal Drink' && (
+                                                    <h3 style={{
+                                                        fontFamily: 'var(--font-serif)',
+                                                        fontSize: '1.5rem',
+                                                        color: 'var(--primary)',
+                                                        marginBottom: '1rem',
+                                                        textTransform: 'uppercase',
+                                                        letterSpacing: '2px'
+                                                    }}>
+                                                        {drink.title}
+                                                    </h3>
+                                                )}
+                                                <img
+                                                    src={drink.imageUrl}
+                                                    alt={drink.title}
+                                                    style={{
+                                                        maxWidth: '100%',
+                                                        width: '400px',
+                                                        borderRadius: '12px',
+                                                        boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
+                                                    }}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <p style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '0.5rem' }}>
+                                            Check back for our seasonal offerings!
+                                        </p>
+                                        <p style={{ opacity: 0.7, fontSize: '0.95rem' }}>
+                                            Our seasonal drink menu rotates throughout the year. Ask your server for current selections.
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        {activeTab === "Wine" && (
+                            <div style={{
+                                textAlign: 'center',
+                                marginBottom: '3rem',
+                                position: 'relative'
+                            }}>
+                                <h2 style={{
+                                    fontFamily: 'var(--font-serif)',
+                                    fontSize: '2.5rem',
+                                    color: 'var(--primary)',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '3px',
+                                    display: 'inline-block',
+                                    background: 'var(--background)',
+                                    padding: '0 1.5rem',
+                                    position: 'relative',
+                                    zIndex: 1
+                                }}>
+                                    Wines
+                                </h2>
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: 0,
+                                    right: 0,
+                                    height: '1px',
+                                    background: 'rgba(0,0,0,0.1)',
+                                    zIndex: 0
+                                }}></div>
+                                <p style={{
+                                    fontStyle: 'italic',
+                                    opacity: 0.7,
+                                    marginTop: '0.5rem',
+                                    fontSize: '0.95rem'
+                                }}>
+                                    All specialty wines are available by the glass or by the bottle. House wine by the glass only.
+                                </p>
+                            </div>
+                        )}
+
+                        {isCocktails ? (
+                            <div className="drinks-columns" style={{
+                                display: 'grid',
+                                gridTemplateColumns: '1fr 1fr',
+                                gap: '3rem',
+                                alignItems: 'start'
+                            }}>
+                                <div>{renderSections(cocktailsLeftCol)}</div>
+                                <div>{renderSections(cocktailsRightCol)}</div>
+                            </div>
+                        ) : activeTab !== "Seasonal Drinks" ? (
+                            <div className={isGrid ? 'drinks-columns' : ''} style={{
+                                display: isGrid ? 'grid' : 'block',
+                                gridTemplateColumns: isGrid ? `repeat(${cols}, 1fr)` : undefined,
+                                gap: '2rem',
+                                alignItems: 'start'
+                            }}>
+                                {renderSections(data)}
+                            </div>
+                        ) : null}
+                    </div>
+
+                    <div style={{
+                        marginTop: '4rem',
+                        padding: '3rem 2rem',
+                        background: 'var(--primary)',
+                        color: 'white',
+                        borderRadius: '16px',
+                        textAlign: 'center',
+                        boxShadow: '0 20px 40px rgba(10, 61, 98, 0.2)',
+                        marginBottom: '4rem'
+                    }}>
+                        <h2 style={{ color: 'white', fontFamily: 'var(--font-serif)', fontSize: '2rem', marginBottom: '1rem' }}>Sip, Relax, Repeat.</h2>
+                        <p style={{ opacity: 0.9, maxWidth: '600px', margin: '0 auto 2rem' }}>
+                            Join us for Happy Hour or enjoy a drink by the water. Our selection of craft cocktails and local brews is always rotating.
+                        </p>
+                    </div>
+                </div>
+                <style jsx>{`
                 .fade-in {
                     animation: fadeIn 0.5s ease-in-out;
                 }
@@ -569,7 +613,9 @@ function DrinksPageContent() {
                     }
                 }
             `}</style>
+            </div>
         </div>
+        </div >
     );
 }
 
