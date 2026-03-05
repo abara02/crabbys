@@ -588,8 +588,6 @@ function DrinksPageContent() {
                             </div>
                         ) : null}
                     </div>
-
-                    <CarouselGallery />
                 </div>
                 <style jsx>{`
                 .fade-in {
@@ -612,6 +610,13 @@ function DrinksPageContent() {
                     .gallery-mobile  { display: grid !important; }
                 }
             `}</style>
+            </div>
+
+            {/* Full-width Black Background Section for Gallery */}
+            <div style={{ background: '#000000', width: '100%', padding: '4rem 0' }}>
+                <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                    <CarouselGallery />
+                </div>
             </div>
         </div>
     );
