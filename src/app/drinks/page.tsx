@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { GlassWater, Wine, Beer, Leaf, Martini } from 'lucide-react';
+import { GlassWater, Wine, Beer, Leaf, Martini, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { getBeerListImage, BeerListData, getSeasonalDrinkImages, SeasonalDrinkData } from '@/lib/wordpress';
 
 interface DrinkItem {
@@ -589,50 +589,7 @@ function DrinksPageContent() {
                         ) : null}
                     </div>
 
-                    {/* Drinks Gallery */}
-                    <div style={{
-                        marginTop: '4rem',
-                        marginBottom: '4rem',
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                        gap: '1.5rem',
-                        width: '100%'
-                    }}>
-                        {[
-                            '/pics/drink_gallery_corrected_1.jpg',
-                            '/pics/drink_gallery_corrected_2.jpg',
-                            '/pics/drink_gallery_corrected_3.jpg',
-                            '/pics/drink_gallery_corrected_4.jpg',
-                            '/pics/drink_gallery_corrected_5.jpg',
-                            '/pics/drink_gallery_corrected_6.jpg',
-                            '/pics/cheers.jpeg',
-                            '/pics/cocktail.jpeg',
-                            '/pics/beer taps.jpeg',
-                            '/pics/drinks hero.png'
-                        ].map((src, index) => (
-                            <div key={index} style={{
-                                width: '100%',
-                                aspectRatio: '1 / 1',
-                                overflow: 'hidden',
-                                borderRadius: '16px',
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-                                position: 'relative'
-                            }}>
-                                <img
-                                    src={src}
-                                    alt={`Gallery Image ${index + 1}`}
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover',
-                                        transition: 'transform 0.5s ease',
-                                    }}
-                                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
-                                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
-                                />
-                            </div>
-                        ))}
-                    </div>
+                    <CarouselGallery />
                 </div>
                 <style jsx>{`
                 .fade-in {
@@ -651,6 +608,8 @@ function DrinksPageContent() {
                     .drinks-columns {
                         grid-template-columns: 1fr !important;
                     }
+                    .gallery-desktop { display: none !important; }
+                    .gallery-mobile  { display: grid !important; }
                 }
             `}</style>
             </div>
@@ -663,5 +622,171 @@ export default function DrinksPage() {
         <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--background)' }} />}>
             <DrinksPageContent />
         </Suspense>
+    );
+}
+
+// ── Carousel Gallery ─────────────────────────────────────────────────────────
+
+const GALLERY_IMAGES = [
+    '/pics/drinks hero.png',
+    '/pics/cheers.jpeg',
+    '/pics/drink_gallery_corrected_1.jpg',
+    '/pics/drink_gallery_corrected_2.jpg',
+    '/pics/drink_gallery_corrected_3.jpg',
+    '/pics/cocktail.jpeg',
+    '/pics/drink_gallery_corrected_4.jpg',
+    '/pics/beer taps.jpeg',
+    '/pics/drink_gallery_corrected_5.jpg',
+    '/pics/drink_gallery_corrected_6.jpg'
+];
+
+function CarouselGallery() {
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    const next = () => setActiveIndex((prev) => (prev + 1) % GALLERY_IMAGES.length);
+    const prev = () => setActiveIndex((prev) => (prev - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length);
+
+    // Keyboard navigation
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'ArrowRight') next();
+            if (e.key === 'ArrowLeft') prev();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
+    // Autoplay feature: cycle every 4 seconds
+    useEffect(() => {
+        const timer = setInterval(() => {
+            next();
+        }, 4000); // 4 seconds
+        return () => clearInterval(timer);
+    }, []);
+
+    return (
+        <div style={{
+            marginTop: '4rem',
+            marginBottom: '4rem',
+            width: '100%',
+            background: '#000', // Solid black
+            borderRadius: '24px',
+            padding: '2rem 1rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1.5rem',
+            // Optional: slight border to define the edge against a dark background
+            border: '1px solid rgba(255,255,255,0.05)'
+        }}>
+            {/* Main Stage */}
+            <div style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '900px',
+                aspectRatio: '16/9',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+                backgroundColor: '#000'
+            }}>
+                {/* Image */}
+                <div style={{
+                    width: '100%', height: '100%',
+                    backgroundImage: `url("${GALLERY_IMAGES[activeIndex]}")`,
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    transition: 'background-image 0.4s ease-in-out'
+                }} />
+
+                {/* Left Arrow */}
+                <button
+                    onClick={prev}
+                    style={{
+                        position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)',
+                        background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(4px)',
+                        border: '1px solid rgba(255,255,255,0.3)',
+                        width: '45px', height: '45px', borderRadius: '50%',
+                        color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        cursor: 'pointer', transition: 'all 0.2s', zIndex: 10
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.3)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+                    aria-label="Previous image"
+                >
+                    <ChevronLeft size={24} />
+                </button>
+
+                {/* Right Arrow */}
+                <button
+                    onClick={next}
+                    style={{
+                        position: 'absolute', top: '50%', right: '1rem', transform: 'translateY(-50%)',
+                        background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(4px)',
+                        border: '1px solid rgba(255,255,255,0.3)',
+                        width: '45px', height: '45px', borderRadius: '50%',
+                        color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        cursor: 'pointer', transition: 'all 0.2s', zIndex: 10
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.3)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+                    aria-label="Next image"
+                >
+                    <ChevronRight size={24} />
+                </button>
+
+                {/* Counter */}
+                <div style={{
+                    position: 'absolute', bottom: '1rem', right: '1.5rem',
+                    background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
+                    padding: '0.4rem 0.8rem', borderRadius: '20px',
+                    color: 'white', fontSize: '0.85rem', fontWeight: 'bold', fontFamily: 'monospace'
+                }}>
+                    {activeIndex + 1} / {GALLERY_IMAGES.length}
+                </div>
+            </div>
+
+            {/* Thumbnails Row */}
+            <div style={{
+                display: 'flex',
+                gap: '10px',
+                width: '100%',
+                maxWidth: '900px',
+                overflowX: 'auto',
+                padding: '0.5rem 0',
+                scrollbarWidth: 'thin',
+                scrollbarColor: 'var(--accent) transparent'
+            }}>
+                {GALLERY_IMAGES.map((src, idx) => (
+                    <button
+                        key={idx}
+                        onClick={() => setActiveIndex(idx)}
+                        style={{
+                            flex: '0 0 auto',
+                            width: '80px',
+                            height: '60px',
+                            padding: 0,
+                            margin: 0,
+                            border: idx === activeIndex ? '2px solid var(--accent)' : '2px solid transparent',
+                            borderRadius: '8px',
+                            overflow: 'hidden',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            opacity: idx === activeIndex ? 1 : 0.5
+                        }}
+                        onMouseEnter={e => { if (idx !== activeIndex) e.currentTarget.style.opacity = '0.8' }}
+                        onMouseLeave={e => { if (idx !== activeIndex) e.currentTarget.style.opacity = '0.5' }}
+                        aria-label={`View gallery image ${idx + 1}`}
+                    >
+                        <img
+                            src={src}
+                            alt={`Thumbnail ${idx + 1}`}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                    </button>
+                ))}
+            </div>
+        </div>
     );
 }
