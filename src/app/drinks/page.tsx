@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { GlassWater, Wine, Beer, Leaf, Martini } from 'lucide-react';
 import { getBeerListImage, BeerListData, getSeasonalDrinkImages, SeasonalDrinkData } from '@/lib/wordpress';
 
@@ -260,8 +261,13 @@ function renderSections(sections: DrinkSection[]) {
     ));
 }
 
-export default function DrinksPage() {
-    const [activeTab, setActiveTab] = useState("Cocktails & Spirits");
+function DrinksPageContent() {
+    const searchParams = useSearchParams();
+    const validTabs = ["Cocktails & Spirits", "Beer", "Wine", "Seasonal Drinks"];
+    const tabParam = searchParams.get('tab');
+    const initialTab = tabParam && validTabs.includes(tabParam) ? tabParam : "Cocktails & Spirits";
+
+    const [activeTab, setActiveTab] = useState(initialTab);
     const [beerListImage, setBeerListImage] = useState<BeerListData | null>(null);
     const [loadingBeer, setLoadingBeer] = useState(false);
     const [seasonalImages, setSeasonalImages] = useState<SeasonalDrinkData[]>([]);
@@ -270,6 +276,14 @@ export default function DrinksPage() {
     const cols = getColumnCount(activeTab);
     const isGrid = cols > 1;
     const isCocktails = activeTab === "Cocktails & Spirits";
+
+    // Sync tab with URL query param when it changes
+    useEffect(() => {
+        const tab = searchParams.get('tab');
+        if (tab && validTabs.includes(tab)) {
+            setActiveTab(tab);
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         if (activeTab === "Beer" && !beerListImage) {
@@ -438,7 +452,7 @@ export default function DrinksPage() {
                                                 alt={drink.title}
                                                 style={{
                                                     maxWidth: '100%',
-                                                    width: '500px',
+                                                    width: '400px',
                                                     borderRadius: '12px',
                                                     boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
                                                 }}
@@ -556,5 +570,13 @@ export default function DrinksPage() {
                 }
             `}</style>
         </div>
+    );
+}
+
+export default function DrinksPage() {
+    return (
+        <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--background)' }} />}>
+            <DrinksPageContent />
+        </Suspense>
     );
 }
