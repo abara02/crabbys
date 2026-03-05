@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GlassWater, Wine, Beer, Leaf, Martini } from 'lucide-react';
+import { getBeerListImage, BeerListData } from '@/lib/wordpress';
 
 interface DrinkItem {
     name: string;
@@ -106,11 +107,6 @@ const cocktailsRightCol: DrinkSection[] = [
 
 // ── Beer ──
 const beerData: DrinkSection[] = [
-    {
-        category: "Draft Beer",
-        items: [],
-        note: "Beer list image coming soon — ask your server about our rotating craft taps!"
-    },
     {
         category: "Bottled Beer",
         items: [
@@ -267,10 +263,22 @@ function renderSections(sections: DrinkSection[]) {
 
 export default function DrinksPage() {
     const [activeTab, setActiveTab] = useState("Cocktails & Spirits");
+    const [beerListImage, setBeerListImage] = useState<BeerListData | null>(null);
+    const [loadingBeer, setLoadingBeer] = useState(false);
     const data = getTabData(activeTab);
     const cols = getColumnCount(activeTab);
     const isGrid = cols > 1;
     const isCocktails = activeTab === "Cocktails & Spirits";
+
+    useEffect(() => {
+        if (activeTab === "Beer" && !beerListImage) {
+            setLoadingBeer(true);
+            getBeerListImage().then(data => {
+                setBeerListImage(data);
+                setLoadingBeer(false);
+            });
+        }
+    }, [activeTab, beerListImage]);
 
     return (
         <div className="section" style={{ minHeight: '100vh', background: 'var(--background)', paddingTop: '4rem' }}>
@@ -331,6 +339,55 @@ export default function DrinksPage() {
                 </div>
 
                 <div key={activeTab} className="fade-in">
+                    {activeTab === "Beer" && (
+                        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                            {loadingBeer ? (
+                                <p style={{ opacity: 0.6, fontStyle: 'italic' }}>Loading draft beer list...</p>
+                            ) : beerListImage ? (
+                                <div>
+                                    <div style={{
+                                        textAlign: 'center',
+                                        marginBottom: '1.5rem',
+                                        position: 'relative'
+                                    }}>
+                                        <h2 style={{
+                                            fontFamily: 'var(--font-serif)',
+                                            fontSize: '2.5rem',
+                                            color: 'var(--primary)',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '3px',
+                                            display: 'inline-block',
+                                            background: 'var(--background)',
+                                            padding: '0 1.5rem',
+                                            position: 'relative',
+                                            zIndex: 1
+                                        }}>
+                                            {beerListImage.title}
+                                        </h2>
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: '50%',
+                                            left: 0,
+                                            right: 0,
+                                            height: '1px',
+                                            background: 'rgba(0,0,0,0.1)',
+                                            zIndex: 0
+                                        }}></div>
+                                    </div>
+                                    <img
+                                        src={beerListImage.imageUrl}
+                                        alt={beerListImage.title}
+                                        style={{
+                                            maxWidth: '100%',
+                                            width: '800px',
+                                            borderRadius: '12px',
+                                            boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
+                                        }}
+                                    />
+                                </div>
+                            ) : null}
+                        </div>
+                    )}
                     {activeTab === "Wine" && (
                         <div style={{
                             textAlign: 'center',
