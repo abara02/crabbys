@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Leaf, Calendar, Clock, Star, Utensils } from 'lucide-react';
 import { getDailySpecials, DailySpecialData, getSeasonalSpecials, SeasonalSpecialData } from '@/lib/wordpress';
@@ -201,7 +201,7 @@ const dailySpecials: MenuSection[] = [
     }
 ];
 
-export default function MenuPage() {
+function MenuPageContent() {
     const searchParams = useSearchParams();
     const validTabs = ["Main Menu", "Kids Menu", "Brunch Menu", "Seasonal Specials", "Daily Specials"];
     const tabParam = searchParams.get('tab');
@@ -594,5 +594,13 @@ export default function MenuPage() {
                 }
             `}</style>
         </div>
+    );
+}
+
+export default function MenuPage() {
+    return (
+        <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--background)' }} />}>
+            <MenuPageContent />
+        </Suspense>
     );
 }
