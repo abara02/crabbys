@@ -579,13 +579,9 @@ function DrinksPageContent() {
                                 <div>{renderSections([cocktailsLeftCol[0]])}</div>
                                 <div>{renderSections([cocktailsRightCol[0]])}</div>
 
-                                {/* Row 2: Bourbon & Tequila */}
+                                {/* Row 2: Bourbon & Tequila + Bottles/Cans */}
                                 <div>{renderSections([cocktailsLeftCol[1]])}</div>
-                                <div>{renderSections([cocktailsRightCol[1]])}</div>
-
-                                {/* Row 3: Empty Left & Bottles/Cans Right */}
-                                <div></div>
-                                <div>{renderSections([cocktailsRightCol[2]])}</div>
+                                <div>{renderSections([cocktailsRightCol[1], cocktailsRightCol[2]])}</div>
                             </div>
                         ) : activeTab !== "Seasonal Drinks" ? (
                             <div className={isGrid ? 'drinks-columns' : ''} style={{
