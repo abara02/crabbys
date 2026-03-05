@@ -309,7 +309,7 @@ function DrinksPageContent() {
         <div style={{ minHeight: '100vh', background: 'var(--background)' }}>
             {/* Hero Section */}
             <div style={{
-                height: '60vh',
+                height: '30vh',
                 width: '100%',
                 position: 'relative',
                 display: 'flex',
@@ -330,6 +330,13 @@ function DrinksPageContent() {
                     top: 0, left: 0, width: '100%', height: '100%',
                     background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)',
                     zIndex: 1
+                }}></div>
+                {/* White fade effect at the bottom */}
+                <div style={{
+                    position: 'absolute',
+                    bottom: 0, left: 0, width: '100%', height: '15vh',
+                    background: 'linear-gradient(to top, var(--background) 0%, transparent 100%)',
+                    zIndex: 2
                 }}></div>
 
                 <div style={{ position: 'relative', zIndex: 3, textAlign: 'center' }}>
