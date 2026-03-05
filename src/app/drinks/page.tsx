@@ -615,7 +615,6 @@ function DrinksPageContent() {
             `}</style>
             </div>
         </div>
-        </div >
     );
 }
 
