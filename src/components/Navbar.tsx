@@ -1,13 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { Menu, X, Anchor } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+
+const menuDropdownItems = [
+  { name: 'Main Menu', href: '/menu?tab=Main+Menu' },
+  { name: 'Daily Specials', href: '/menu?tab=Daily+Specials' },
+  { name: 'Seasonal Specials', href: '/menu?tab=Seasonal+Specials' },
+  { name: 'Brunch Menu', href: '/menu?tab=Brunch+Menu' },
+  { name: 'Kids Menu', href: '/menu?tab=Kids+Menu' },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [menuDropdownOpen, setMenuDropdownOpen] = useState(false);
+  const [mobileMenuExpanded, setMobileMenuExpanded] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   // Handle scroll effect
@@ -19,15 +30,35 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setMenuDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'Menu', href: '/menu' },
     { name: 'Drinks', href: '/drinks' },
     { name: 'Specials', href: '/specials' },
     { name: 'Live Music', href: '/events' },
     { name: 'Private Events', href: '/private-events' },
     { name: 'More', href: '/contact' },
   ];
+
+  const linkStyle = {
+    fontWeight: '600' as const,
+    fontSize: '0.95rem',
+    letterSpacing: '0.5px',
+    transition: 'var(--transition)',
+    color: 'var(--white)',
+    position: 'relative' as const,
+    paddingBottom: '4px'
+  };
 
   return (
     <nav
@@ -46,33 +77,84 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }} className="desktop-menu">
-          {navLinks.map((link) => {
+          {/* Home link */}
+          <Link href="/" style={linkStyle}>
+            Home
+            {pathname === '/' && (
+              <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--white)', borderRadius: '2px' }} />
+            )}
+          </Link>
+
+          {/* Menu dropdown */}
+          <div
+            ref={dropdownRef}
+            onMouseEnter={() => setMenuDropdownOpen(true)}
+            onMouseLeave={() => setMenuDropdownOpen(false)}
+            style={{ position: 'relative', display: 'flex', alignItems: 'center' }}
+          >
+            <Link
+              href="/menu"
+              style={{ ...linkStyle, cursor: 'pointer' }}
+            >
+              Menu
+              {pathname === '/menu' && (
+                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--white)', borderRadius: '2px' }} />
+              )}
+            </Link>
+
+            {/* Dropdown panel */}
+            <div style={{
+              position: 'absolute',
+              top: '100%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              paddingTop: '0.75rem',
+              opacity: menuDropdownOpen ? 1 : 0,
+              pointerEvents: menuDropdownOpen ? 'auto' : 'none',
+              transition: 'opacity 0.2s ease, transform 0.2s ease',
+              zIndex: 100
+            }}>
+              <div style={{
+                background: 'rgba(0, 0, 0, 0.95)',
+                backdropFilter: 'blur(20px)',
+                borderRadius: '12px',
+                padding: '0.5rem 0',
+                minWidth: '200px',
+                boxShadow: '0 15px 40px rgba(0,0,0,0.4)',
+                border: '1px solid rgba(255,255,255,0.1)'
+              }}>
+                {menuDropdownItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setMenuDropdownOpen(false)}
+                    style={{
+                      display: 'block',
+                      padding: '0.7rem 1.25rem',
+                      color: 'white',
+                      fontSize: '0.9rem',
+                      fontWeight: '500',
+                      transition: 'background 0.15s ease',
+                      whiteSpace: 'nowrap'
+                    }}
+                    onMouseEnter={(e) => { (e.target as HTMLElement).style.background = 'rgba(255,255,255,0.1)'; }}
+                    onMouseLeave={(e) => { (e.target as HTMLElement).style.background = 'transparent'; }}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Rest of nav links */}
+          {navLinks.slice(1).map((link) => {
             const isActive = pathname === link.href;
             return (
-              <Link
-                key={link.name}
-                href={link.href}
-                style={{
-                  fontWeight: '600',
-                  fontSize: '0.95rem',
-                  letterSpacing: '0.5px',
-                  transition: 'var(--transition)',
-                  color: 'var(--white)',
-                  position: 'relative',
-                  paddingBottom: '4px'
-                }}
-              >
+              <Link key={link.name} href={link.href} style={linkStyle}>
                 {link.name}
                 {isActive && (
-                  <div style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '2px',
-                    backgroundColor: 'var(--white)',
-                    borderRadius: '2px'
-                  }} />
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--white)', borderRadius: '2px' }} />
                 )}
               </Link>
             );
@@ -85,7 +167,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu - Simplified for now */}
+      {/* Mobile Menu */}
       {isOpen && (
         <div style={{
           position: 'absolute',
@@ -101,7 +183,52 @@ export default function Navbar() {
           boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
           borderBottom: '1px solid rgba(255,255,255,0.1)'
         }}>
-          {navLinks.map((link) => (
+          <Link href="/" onClick={() => setIsOpen(false)} style={{ color: 'white', fontWeight: '600', fontSize: '1.1rem' }}>
+            Home
+          </Link>
+
+          {/* Mobile Menu dropdown */}
+          <div>
+            <button
+              onClick={() => setMobileMenuExpanded(!mobileMenuExpanded)}
+              style={{
+                color: 'white',
+                fontWeight: '600',
+                fontSize: '1.1rem',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                width: '100%',
+                textAlign: 'left'
+              }}
+            >
+              Menu
+            </button>
+            {mobileMenuExpanded && (
+              <div style={{
+                paddingLeft: '1rem',
+                marginTop: '0.75rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                borderLeft: '2px solid rgba(255,255,255,0.15)'
+              }}>
+                {menuDropdownItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => { setIsOpen(false); setMobileMenuExpanded(false); }}
+                    style={{ color: 'rgba(255,255,255,0.85)', fontWeight: '500', fontSize: '1rem' }}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {navLinks.slice(1).map((link) => (
             <Link
               key={link.name}
               href={link.href}

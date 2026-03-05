@@ -1,57 +1,316 @@
-import { GlassWater, Wine, Beer, Martini, Clock } from 'lucide-react';
+'use client';
 
-const drinksData = [
-    {
-        category: "Wine",
-        items: [
-            { name: "House Chardonnay", price: "7.00/glass | 24.00/bottle", description: "Crisp and refreshing with notes of green apple and citrus." },
-            { name: "House Cabernet Sauvignon", price: "7.00/glass | 24.00/bottle", description: "Full-bodied with dark fruit flavors and a smooth finish." },
-            { name: "Pinot Grigio", price: "8.50/glass | 30.00/bottle", description: "Light and airy with floral aromas and pear notes." },
-            { name: "Merlot", price: "8.50/glass | 30.00/bottle", description: "Soft and approachable with black cherry and plum notes." },
-            { name: "Sauvignon Blanc", price: "9.00/glass | 32.00/bottle", description: "Zesty acidity with tropical fruit and herbaceous notes." }
-        ]
-    },
-    {
-        category: "Beer & Craft Taps",
-        items: [
-            { name: "Bud Light", price: "5.00", description: "Classic American light lager." },
-            { name: "Miller Lite", price: "5.00", description: "Traditional light pilsner." },
-            { name: "Local Craft IPA", price: "7.50", description: "Rotating selection from local breweries. Ask your server for current offerings." },
-            { name: "Seasonal Draft", price: "7.00", description: "Rotating seasonal selection. Ask your server for current offerings." },
-            { name: "Guinness", price: "8.00", description: "Rich and creamy Irish dry stout." },
-            { name: "Stella Artois", price: "7.00", description: "Premium European lager." }
-        ],
-        note: "Ask your server about our 12 rotating craft taps!"
-    },
+import { useState } from 'react';
+import { GlassWater, Wine, Beer, Leaf, Martini } from 'lucide-react';
+
+interface DrinkItem {
+    name: string;
+    price: string;
+    description: string;
+}
+
+interface DrinkSection {
+    category: string;
+    items: DrinkItem[];
+    note?: string;
+    groupHeader?: string;
+}
+
+// ── Cocktails & Spirits ──
+const cocktailsLeftCol: DrinkSection[] = [
     {
         category: "Cocktails",
         items: [
-            { name: "Crabby Margarita", price: "11.00", description: "Our signature blend of tequila, fresh lime juice, and agave nectar with a salty rim." },
-            { name: "Old Fashioned", price: "12.00", description: "Bourbon, sugar, bitters, and a twist of citrus." },
-            { name: "Espresso Martini", price: "13.00", description: "Vodka, fresh espresso, and coffee liqueur." },
-            { name: "Nautical Mule", price: "11.00", description: "Vodka, fresh lime, and spicy ginger beer served in a copper mug." },
-            { name: "Blueberry Lemonade", price: "10.00", description: "Blueberry vodka, fresh lemonade, and a splash of club soda." }
-        ]
+            { name: "Crab'A'Rita", price: "", description: "Don Julio Tequila, Grand Marnier, Lime Juice, and Sour Mix" },
+            { name: "Classic Margarita", price: "", description: "Your choice of Tequila shaken with Triple Sec, Lime Juice & Sour Mix.\nAdd one of our Real Fruit Infused Purees: Strawberry, Blueberry, Blackberry, Coconut, Mango, or Passionfruit" },
+            { name: "Make It a Skinny Margarita", price: "", description: "With agave syrup, orange juice, and lime juice" },
+            { name: "Want a Little Spice?", price: "", description: "Have a spicy Margarita with Tanteo Jalapeño" },
+            { name: "Crabby Daze", price: "", description: "Coconut Rum, Peach Schnapps, Pineapple and Cranberry Juice" },
+            { name: "Mules", price: "", description: "American Mule with Vodka\nIrish Mule with Whiskey\nMexican Mule with Tequila\nKentucky Mule with Bourbon\nAll mixed with Gosling's Ginger Beer & Lime Juice" },
+            { name: "Pama-Rita", price: "", description: "Cabo Wabo Blanco Tequila, Pama Pomegranate liquor, sour mix, and lime" },
+            { name: "Sangrias", price: "", description: "Red Sangria — Cabernet, Brandy, Triple Sec, Orange Juice\nWhite Sangria — Pinot Grigio, Peach Tree, Pineapple Juice, Orange Juice" }
+        ],
+        note: "We feature a full bar. We can make the cocktail you want!"
     },
     {
-        category: "Non-Alcoholics",
+        category: "Bourbon & Whiskey",
         items: [
-            { name: "Fresh Lemonade", price: "3.50", description: "House-made with real lemons." },
-            { name: "Iced Tea", price: "3.00", description: "Freshly brewed black tea." },
-            { name: "Craft Root Beer", price: "4.50", description: "Bottled locally." },
-            { name: "Sparkling Water", price: "4.00", description: "Refreshing carbonated mineral water." },
-            { name: "Assorted Sodas", price: "3.00", description: "Coke, Diet Coke, Sprite, Ginger Ale." }
+            { name: "Bulleit & Bulleit Rye", price: "", description: "" },
+            { name: "Bushmills", price: "", description: "" },
+            { name: "Canadian Club", price: "", description: "" },
+            { name: "Crown Apple · Original · Peach · Vanilla", price: "", description: "" },
+            { name: "Glenlivet", price: "", description: "" },
+            { name: "Jack Daniels", price: "", description: "" },
+            { name: "Jack Daniels Fire", price: "", description: "" },
+            { name: "Jack Daniels Honey", price: "", description: "" },
+            { name: "Jameson Irish Whiskey & Orange", price: "", description: "" },
+            { name: "Johnnie Walker Black or Red", price: "", description: "" },
+            { name: "Jim Beam & Jim Red Stag", price: "", description: "" },
+            { name: "Old Grand Dad", price: "", description: "" },
+            { name: "Makers Mark", price: "", description: "" },
+            { name: "Seagrams 7", price: "", description: "" },
+            { name: "Seagram VO", price: "", description: "" },
+            { name: "Southern Comfort", price: "", description: "" },
+            { name: "Tullamore Dew", price: "", description: "" },
+            { name: "Wild Turkey", price: "", description: "" },
+            { name: "Yukon Jack", price: "", description: "" },
+            { name: "Yukon American Honey", price: "", description: "" },
+            { name: "Woodford Reserve", price: "", description: "" }
         ]
     }
 ];
 
+const cocktailsRightCol: DrinkSection[] = [
+    {
+        category: "Martinis",
+        items: [
+            { name: "Appletini", price: "", description: "Vodka, Sour Apple Pucker, Triple Sec & a Maraschino Cherry" },
+            { name: "Cathy's Espresso Martini", price: "", description: "Stoli Vanilla Vodka, Dark Crème de Cacao, Kahlúa, Fresh brewed espresso and your choice to include Bailey's Irish Cream" },
+            { name: "Classic Dirty Martini", price: "", description: "Shaken with Grey Goose Vodka & Stirrings Dirty Martini Imported Olive Brine, garnished with Olives" },
+            { name: "Classic Gin Martini", price: "", description: "Hendricks Gin, Dry Vermouth, lemon twist, and optional dash of Bitters" },
+            { name: "Cosmopolitan", price: "", description: "Made our way with Absolut Citron, Triple Sec, Splash of Lime Juice and Cranberry\n\nOr Make It a White Cosmo with White Cranberry Juice" },
+            { name: "French Martini", price: "", description: "Classically made with Tito's Handmade Vodka, Chambord & Pineapple Juice" },
+            { name: "Lemon Drop Martini", price: "", description: "Absolut Citron, Triple Sec, Simple Syrup and a Splash of Sour Mix. Glass is Sugar Rimmed" },
+            { name: "Peanut Butter Martini", price: "", description: "Skrewball Whiskey, Kahlua, and Fresh Espresso, Splash of Cream" },
+            { name: "Pecan Pie Martini", price: "", description: "Bourbon, RumChata, Crème de Cacao, Splash of Cream" },
+            { name: "Perfect Manhattan", price: "", description: "Bulleit Rye, Sweet Vermouth, Dry Vermouth, Dash of Bitters, Served with cocktail cherry" },
+            { name: "Tiramisu Martini", price: "", description: "Stoli Vanilla, Amaretto, Kahlua and Splash of Cream" }
+        ]
+    },
+    {
+        category: "Tequila",
+        items: [
+            { name: "1800 Reposado", price: "", description: "" },
+            { name: "Cabo Wabo Blanco", price: "", description: "" },
+            { name: "Casamigos Blanco", price: "", description: "" },
+            { name: "Don Julio Blanco", price: "", description: "" },
+            { name: "Don Julio Reposado", price: "", description: "" },
+            { name: "Espolon Blanco", price: "", description: "" },
+            { name: "Espolon Reposado", price: "", description: "" },
+            { name: "Jose Cuervo Gold", price: "", description: "" },
+            { name: "Patron Silver", price: "", description: "" },
+            { name: "Patron Anejo", price: "", description: "" },
+            { name: "Tanteo Jalapeño", price: "", description: "" }
+        ]
+    },
+    {
+        category: "Bottles & Cans",
+        items: [
+            { name: "High Noon Vodka Seltzers", price: "", description: "Black Cherry, Lime, Peach and Pineapple" },
+            { name: "Sun Cruisers Non-Carbonated", price: "", description: "Iced Tea & Lemonade, Iced Tea, Raspberry and Peach" },
+            { name: "White Claw Black Cherry", price: "", description: "" }
+        ],
+        note: "Spiked Seltzers & Non-Carbonated — Flavors may change due to stock"
+    }
+];
+
+// ── Beer ──
+const beerData: DrinkSection[] = [
+    {
+        category: "Draft Beer",
+        items: [],
+        note: "Beer list image coming soon — ask your server about our rotating craft taps!"
+    },
+    {
+        category: "Bottled Beer",
+        items: [
+            { name: "Becks", price: "", description: "" },
+            { name: "Budweiser", price: "", description: "" },
+            { name: "Bud Light", price: "", description: "" },
+            { name: "Twisted Tea", price: "", description: "" },
+            { name: "Coors Banquet", price: "", description: "" },
+            { name: "Coors Light", price: "", description: "" },
+            { name: "Corona", price: "", description: "" },
+            { name: "Corona Premier", price: "", description: "" },
+            { name: "Heineken", price: "", description: "" },
+            { name: "Heineken Light", price: "", description: "" },
+            { name: "Miller Lite & Miller High Life", price: "", description: "" },
+            { name: "Michelob Ultra", price: "", description: "" },
+            { name: "Rolling Rock", price: "", description: "" },
+            { name: "Sam Adams Lager", price: "", description: "" },
+            { name: "Sam Adams Seasonal", price: "", description: "" },
+            { name: "Yuengling Light", price: "", description: "" }
+        ]
+    },
+    {
+        category: "Non-Alcohol",
+        items: [
+            { name: "Bud Zero NA", price: "", description: "" },
+            { name: "Corona NA", price: "", description: "" },
+            { name: "Guinness NA", price: "", description: "" },
+            { name: "Heineken Zero", price: "", description: "" }
+        ]
+    }
+];
+
+// ── Wine ──
+const wineData: DrinkSection[] = [
+    {
+        category: "Reds",
+        items: [
+            { name: "House Cabernet — Estrella", price: "", description: "" },
+            { name: "House Merlot — Estrella", price: "", description: "" },
+            { name: "Merlot", price: "", description: "California offers rich blackberry, plum & raspberry notes with hints of vanilla & toasted French bread" },
+            { name: "Josh Cabernet Sauvignon", price: "", description: "Blackberry, toasted hazelnut and cinnamon, complemented by hints of vanilla and toasted oak" },
+            { name: "Woodbridge by Mondavi Pinot Noir", price: "", description: "California smells like strawberry, roses & vanilla with flavors of cherry & raspberry" }
+        ]
+    },
+    {
+        category: "Whites",
+        items: [
+            { name: "House Chardonnay — Estrella", price: "", description: "" },
+            { name: "House Pinot Grigio — Estrella", price: "", description: "" },
+            { name: "House White Zinfandel — Sutter Home", price: "", description: "" },
+            { name: "Josh Rosé", price: "", description: "Crisp, light bodied, refreshing and bursting with bright citrus — A warm summer sunset in a glass" },
+            { name: "Cavit Collection Pinot Grigio", price: "", description: "Imported from Italy. Crisp & refreshing with a delicate floral aroma and flavors of citrus, apple, & pear" },
+            { name: "Cultus Moscato", price: "", description: "Produced and bottled in Chile. Full bodied — No Butts About It, with a great fruit finish" },
+            { name: "Nobilo Sauvignon Blanc", price: "", description: "Produced & bottled in Marlborough, New Zealand. Distinct notes of fresh melon & citrus" },
+            { name: "Robert Mondavi Private Selection Chardonnay", price: "", description: "Fruity notes with the smooth aftertaste of vanilla from California" },
+            { name: "Ruffino Prosecco", price: "", description: "A clean & delicate taste with fine bubbles and intense flavors of apples & peaches as well as lingering floral notes" },
+            { name: "Schmitt Söhne Dry Riesling", price: "", description: "From Germany. Crisp green apple, honeysuckle and citrus flavors balanced by notes of bright mineral" }
+        ]
+    }
+];
+
+// ── Seasonal Drinks ──
+const seasonalData: DrinkSection[] = [
+    {
+        category: "Seasonal Drinks",
+        items: [
+            { name: "Check back for our seasonal offerings!", price: "", description: "Our seasonal drink menu rotates throughout the year. Ask your server for current selections." }
+        ]
+    }
+];
+
+const tabs = [
+    { name: "Cocktails & Spirits", icon: <Martini size={18} /> },
+    { name: "Beer", icon: <Beer size={18} /> },
+    { name: "Wine", icon: <Wine size={18} /> },
+    { name: "Seasonal Drinks", icon: <Leaf size={18} /> }
+];
+
+function getTabData(tab: string): DrinkSection[] {
+    switch (tab) {
+        case "Beer": return beerData;
+        case "Wine": return wineData;
+        case "Seasonal Drinks": return seasonalData;
+        default: return [];
+    }
+}
+
+function getColumnCount(tab: string): number {
+    if (tab === "Wine") return 2;
+    return 1;
+}
+
+function renderSections(sections: DrinkSection[]) {
+    return sections.map((section, idx) => (
+        <div key={idx} style={{ marginBottom: '3rem' }}>
+            <div style={{
+                textAlign: 'center',
+                marginBottom: '2rem',
+                position: 'relative'
+            }}>
+                <h2 style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: '2rem',
+                    color: 'var(--primary)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '2px',
+                    display: 'inline-block',
+                    background: 'var(--background)',
+                    padding: '0 1.5rem',
+                    position: 'relative',
+                    zIndex: 1
+                }}>
+                    {section.category}
+                </h2>
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: 0,
+                    right: 0,
+                    height: '1px',
+                    background: 'rgba(0,0,0,0.1)',
+                    zIndex: 0
+                }}></div>
+                {section.note && (
+                    <p style={{
+                        fontStyle: 'italic',
+                        opacity: 0.7,
+                        marginTop: '0.5rem',
+                        fontSize: '0.9rem'
+                    }}>
+                        {section.note}
+                    </p>
+                )}
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                {section.items.map((item, iidx) => (
+                    <div key={iidx} style={{ borderBottom: '1px dashed rgba(0,0,0,0.1)', paddingBottom: '1rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '1rem', marginBottom: '0.25rem' }}>
+                            <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '700', letterSpacing: '0.5px' }}>{item.name}</h3>
+                            {item.price && (
+                                <div style={{ fontWeight: 'bold', color: 'var(--accent)', fontSize: '1rem', whiteSpace: 'nowrap' }}>
+                                    {item.price}
+                                </div>
+                            )}
+                        </div>
+                        {item.description && <p style={{ opacity: 0.8, fontSize: '0.85rem', margin: 0, whiteSpace: 'pre-line' }}>{item.description}</p>}
+                    </div>
+                ))}
+            </div>
+        </div>
+    ));
+}
+
 export default function DrinksPage() {
+    const [activeTab, setActiveTab] = useState("Cocktails & Spirits");
+    const data = getTabData(activeTab);
+    const cols = getColumnCount(activeTab);
+    const isGrid = cols > 1;
+    const isCocktails = activeTab === "Cocktails & Spirits";
+
     return (
         <div className="section" style={{ minHeight: '100vh', background: 'var(--background)', paddingTop: '4rem' }}>
-            <div className="container" style={{ maxWidth: '1000px' }}>
-                <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-                    <img src="/logo_with_text.png" alt="Crabby Al's Logo" style={{ height: '180px', width: 'auto', marginBottom: '1.5rem' }} />
-                    <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(3rem, 8vw, 4.5rem)', marginBottom: '1.5rem' }}>Drinks Menu</h1>
+            <div className="container" style={{ maxWidth: '1200px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                    <img src="/logo_with_text.png" alt="Crabby Al's Logo" style={{ height: '150px', width: 'auto', marginBottom: '2rem' }} />
+
+                    {/* Tab Navigation */}
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexWrap: 'wrap',
+                        gap: '1rem',
+                        marginBottom: '4rem'
+                    }}>
+                        {tabs.map((tab) => (
+                            <button
+                                key={tab.name}
+                                onClick={() => setActiveTab(tab.name)}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.75rem',
+                                    padding: '0.75rem 1.5rem',
+                                    borderRadius: '50px',
+                                    border: 'none',
+                                    background: activeTab === tab.name ? 'var(--primary)' : 'var(--white)',
+                                    color: activeTab === tab.name ? 'white' : 'var(--primary)',
+                                    fontWeight: 'bold',
+                                    cursor: 'pointer',
+                                    transition: 'var(--transition)',
+                                    boxShadow: activeTab === tab.name ? '0 10px 20px rgba(10, 61, 98, 0.2)' : '0 4px 10px rgba(0,0,0,0.05)',
+                                    fontSize: '0.9rem'
+                                }}
+                            >
+                                {tab.icon}
+                                {tab.name}
+                            </button>
+                        ))}
+                    </div>
 
                     <div style={{
                         fontSize: '1.2rem',
@@ -71,8 +330,8 @@ export default function DrinksPage() {
                     </div>
                 </div>
 
-                {drinksData.map((section, idx) => (
-                    <div key={idx} style={{ marginBottom: '5rem' }}>
+                <div key={activeTab} className="fade-in">
+                    {activeTab === "Wine" && (
                         <div style={{
                             textAlign: 'center',
                             marginBottom: '3rem',
@@ -83,14 +342,14 @@ export default function DrinksPage() {
                                 fontSize: '2.5rem',
                                 color: 'var(--primary)',
                                 textTransform: 'uppercase',
-                                letterSpacing: '2px',
+                                letterSpacing: '3px',
                                 display: 'inline-block',
                                 background: 'var(--background)',
                                 padding: '0 1.5rem',
                                 position: 'relative',
                                 zIndex: 1
                             }}>
-                                {section.category}
+                                Wines
                             </h2>
                             <div style={{
                                 position: 'absolute',
@@ -101,41 +360,42 @@ export default function DrinksPage() {
                                 background: 'rgba(0,0,0,0.1)',
                                 zIndex: 0
                             }}></div>
-                            {section.note && (
-                                <p style={{
-                                    fontStyle: 'italic',
-                                    opacity: 0.7,
-                                    marginTop: '0.5rem',
-                                    fontSize: '0.9rem'
-                                }}>
-                                    {section.note}
-                                </p>
-                            )}
+                            <p style={{
+                                fontStyle: 'italic',
+                                opacity: 0.7,
+                                marginTop: '0.5rem',
+                                fontSize: '0.95rem'
+                            }}>
+                                All specialty wines are available by the glass or by the bottle. House wine by the glass only.
+                            </p>
                         </div>
+                    )}
 
-                        <div style={{
+                    {isCocktails ? (
+                        <div className="drinks-columns" style={{
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-                            gap: '2.5rem 4rem'
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: '3rem',
+                            alignItems: 'start'
                         }}>
-                            {section.items.map((item, iidx) => (
-                                <div key={iidx} style={{ borderBottom: '1px dashed rgba(0,0,0,0.1)', paddingBottom: '1rem' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '1rem', marginBottom: '0.25rem' }}>
-                                        <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: '700', letterSpacing: '0.5px' }}>{item.name}</h3>
-                                        <div style={{ fontWeight: 'bold', color: 'var(--accent)', fontSize: '1.1rem', whiteSpace: 'nowrap' }}>
-                                            {item.price}
-                                        </div>
-                                    </div>
-                                    {item.description && <p style={{ opacity: 0.8, fontSize: '0.9rem', margin: 0 }}>{item.description}</p>}
-                                </div>
-                            ))}
+                            <div>{renderSections(cocktailsLeftCol)}</div>
+                            <div>{renderSections(cocktailsRightCol)}</div>
                         </div>
-                    </div>
-                ))}
+                    ) : (
+                        <div className={isGrid ? 'drinks-columns' : ''} style={{
+                            display: isGrid ? 'grid' : 'block',
+                            gridTemplateColumns: isGrid ? `repeat(${cols}, 1fr)` : undefined,
+                            gap: '2rem',
+                            alignItems: 'start'
+                        }}>
+                            {renderSections(data)}
+                        </div>
+                    )}
+                </div>
 
                 <div style={{
-                    marginTop: '6rem',
-                    padding: '4rem 2rem',
+                    marginTop: '4rem',
+                    padding: '3rem 2rem',
                     background: 'var(--primary)',
                     color: 'white',
                     borderRadius: '16px',
@@ -149,6 +409,25 @@ export default function DrinksPage() {
                     </p>
                 </div>
             </div>
+            <style jsx>{`
+                .fade-in {
+                    animation: fadeIn 0.5s ease-in-out;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @media (max-width: 1200px) {
+                    .drinks-columns {
+                        grid-template-columns: repeat(2, 1fr) !important;
+                    }
+                }
+                @media (max-width: 768px) {
+                    .drinks-columns {
+                        grid-template-columns: 1fr !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 }

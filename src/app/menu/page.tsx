@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Leaf, Calendar, Clock, Star, Utensils } from 'lucide-react';
 import { getDailySpecials, DailySpecialData, getSeasonalSpecials, SeasonalSpecialData } from '@/lib/wordpress';
 
@@ -201,11 +202,24 @@ const dailySpecials: MenuSection[] = [
 ];
 
 export default function MenuPage() {
-    const [activeTab, setActiveTab] = useState("Main Menu");
+    const searchParams = useSearchParams();
+    const validTabs = ["Main Menu", "Kids Menu", "Brunch Menu", "Seasonal Specials", "Daily Specials"];
+    const tabParam = searchParams.get('tab');
+    const initialTab = tabParam && validTabs.includes(tabParam) ? tabParam : "Main Menu";
+
+    const [activeTab, setActiveTab] = useState(initialTab);
     const [specials, setSpecials] = useState<DailySpecialData | null>(null);
     const [loadingSpecials, setLoadingSpecials] = useState(false);
     const [seasonalSpecials, setSeasonalSpecials] = useState<SeasonalSpecialData[]>([]);
     const [loadingSeasonal, setLoadingSeasonal] = useState(false);
+
+    // Sync tab with URL query param when it changes
+    useEffect(() => {
+        const tab = searchParams.get('tab');
+        if (tab && validTabs.includes(tab)) {
+            setActiveTab(tab);
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         if (activeTab === "Daily Specials" && !specials) {
@@ -226,10 +240,10 @@ export default function MenuPage() {
 
     const tabs = [
         { name: "Main Menu", icon: <Utensils size={18} /> },
-        { name: "Kids Menu", icon: <Star size={18} /> },
-        { name: "Brunch Menu", icon: <Clock size={18} /> },
+        { name: "Daily Specials", icon: <Calendar size={18} /> },
         { name: "Seasonal Specials", icon: <Leaf size={18} /> },
-        { name: "Daily Specials", icon: <Calendar size={18} /> }
+        { name: "Brunch Menu", icon: <Clock size={18} /> },
+        { name: "Kids Menu", icon: <Star size={18} /> }
     ];
 
     const getActiveData = () => {
