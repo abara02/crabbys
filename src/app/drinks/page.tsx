@@ -589,20 +589,49 @@ function DrinksPageContent() {
                         ) : null}
                     </div>
 
+                    {/* Drinks Gallery */}
                     <div style={{
                         marginTop: '4rem',
-                        padding: '3rem 2rem',
-                        background: 'var(--primary)',
-                        color: 'white',
-                        borderRadius: '16px',
-                        textAlign: 'center',
-                        boxShadow: '0 20px 40px rgba(10, 61, 98, 0.2)',
-                        marginBottom: '4rem'
+                        marginBottom: '4rem',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                        gap: '1.5rem',
+                        width: '100%'
                     }}>
-                        <h2 style={{ color: 'white', fontFamily: 'var(--font-serif)', fontSize: '2rem', marginBottom: '1rem' }}>Sip, Relax, Repeat.</h2>
-                        <p style={{ opacity: 0.9, maxWidth: '600px', margin: '0 auto 2rem' }}>
-                            Join us for Happy Hour or enjoy a drink by the water. Our selection of craft cocktails and local brews is always rotating.
-                        </p>
+                        {[
+                            '/pics/drink_gallery_corrected_1.jpg',
+                            '/pics/drink_gallery_corrected_2.jpg',
+                            '/pics/drink_gallery_corrected_3.jpg',
+                            '/pics/drink_gallery_corrected_4.jpg',
+                            '/pics/drink_gallery_corrected_5.jpg',
+                            '/pics/drink_gallery_corrected_6.jpg',
+                            '/pics/cheers.jpeg',
+                            '/pics/cocktail.jpeg',
+                            '/pics/beer taps.jpeg',
+                            '/pics/drinks hero.png'
+                        ].map((src, index) => (
+                            <div key={index} style={{
+                                width: '100%',
+                                aspectRatio: '1 / 1',
+                                overflow: 'hidden',
+                                borderRadius: '16px',
+                                boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+                                position: 'relative'
+                            }}>
+                                <img
+                                    src={src}
+                                    alt={`Gallery Image ${index + 1}`}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        transition: 'transform 0.5s ease',
+                                    }}
+                                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
+                                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+                                />
+                            </div>
+                        ))}
                     </div>
                 </div>
                 <style jsx>{`
