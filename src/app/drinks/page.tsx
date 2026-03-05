@@ -588,6 +588,8 @@ function DrinksPageContent() {
                             </div>
                         ) : null}
                     </div>
+
+                    <CarouselGallery />
                 </div>
                 <style jsx>{`
                 .fade-in {
@@ -610,13 +612,6 @@ function DrinksPageContent() {
                     .gallery-mobile  { display: grid !important; }
                 }
             `}</style>
-            </div>
-
-            {/* Full-width Black Background Section for Gallery */}
-            <div style={{ background: '#000000', width: '100%', padding: '4rem 0' }}>
-                <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                    <CarouselGallery />
-                </div>
             </div>
         </div>
     );
@@ -673,7 +668,7 @@ function CarouselGallery() {
             marginTop: '4rem',
             marginBottom: '4rem',
             width: '100%',
-            background: '#000000',
+            background: 'transparent',
             borderRadius: '24px',
             padding: '2rem 1rem',
             display: 'flex',
@@ -689,8 +684,8 @@ function CarouselGallery() {
                 aspectRatio: '16/9',
                 borderRadius: '16px',
                 overflow: 'hidden',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-                backgroundColor: '#000'
+                boxShadow: 'none',
+                backgroundColor: 'transparent'
             }}>
                 {/* Image */}
                 <div style={{
@@ -707,14 +702,14 @@ function CarouselGallery() {
                     onClick={prev}
                     style={{
                         position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)',
-                        background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(4px)',
+                        background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)',
                         border: '1px solid rgba(255,255,255,0.3)',
                         width: '45px', height: '45px', borderRadius: '50%',
                         color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
                         cursor: 'pointer', transition: 'all 0.2s', zIndex: 10
                     }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.3)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.4)'}
                     aria-label="Previous image"
                 >
                     <ChevronLeft size={24} />
@@ -725,14 +720,14 @@ function CarouselGallery() {
                     onClick={next}
                     style={{
                         position: 'absolute', top: '50%', right: '1rem', transform: 'translateY(-50%)',
-                        background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(4px)',
+                        background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)',
                         border: '1px solid rgba(255,255,255,0.3)',
                         width: '45px', height: '45px', borderRadius: '50%',
                         color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
                         cursor: 'pointer', transition: 'all 0.2s', zIndex: 10
                     }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.3)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.4)'}
                     aria-label="Next image"
                 >
                     <ChevronRight size={24} />
