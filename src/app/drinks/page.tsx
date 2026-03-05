@@ -646,7 +646,6 @@ function CarouselGallery() {
     const next = () => setActiveIndex((prev) => (prev + 1) % GALLERY_IMAGES.length);
     const prev = () => setActiveIndex((prev) => (prev - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length);
 
-    // Keyboard navigation
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'ArrowRight') next();
@@ -656,11 +655,11 @@ function CarouselGallery() {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
-    // Autoplay feature: cycle every 4 seconds
+    // Auto-cycle every 5 seconds
     useEffect(() => {
         const timer = setInterval(() => {
-            next();
-        }, 4000); // 4 seconds
+            setActiveIndex((prev) => (prev + 1) % GALLERY_IMAGES.length);
+        }, 5000);
         return () => clearInterval(timer);
     }, []);
 
@@ -669,15 +668,13 @@ function CarouselGallery() {
             marginTop: '4rem',
             marginBottom: '4rem',
             width: '100%',
-            background: '#000', // Solid black
+            background: '#000000',
             borderRadius: '24px',
             padding: '2rem 1rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '1.5rem',
-            // Optional: slight border to define the edge against a dark background
-            border: '1px solid rgba(255,255,255,0.05)'
+            gap: '1.5rem'
         }}>
             {/* Main Stage */}
             <div style={{
@@ -736,15 +733,6 @@ function CarouselGallery() {
                     <ChevronRight size={24} />
                 </button>
 
-                {/* Counter */}
-                <div style={{
-                    position: 'absolute', bottom: '1rem', right: '1.5rem',
-                    background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
-                    padding: '0.4rem 0.8rem', borderRadius: '20px',
-                    color: 'white', fontSize: '0.85rem', fontWeight: 'bold', fontFamily: 'monospace'
-                }}>
-                    {activeIndex + 1} / {GALLERY_IMAGES.length}
-                </div>
             </div>
 
             {/* Thumbnails Row */}
