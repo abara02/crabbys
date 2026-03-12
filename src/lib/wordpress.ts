@@ -257,13 +257,8 @@ export async function getHappenings(): Promise<HappeningData[]> {
                 nodes {
                     id
                     title
-                    featuredImage {
-                        node {
-                            sourceUrl
-                        }
-                    }
                     happenings {
-                        uploadHappenings {
+                        uploadImage {
                             node {
                                 sourceUrl
                             }
@@ -293,7 +288,7 @@ export async function getHappenings(): Promise<HappeningData[]> {
         return nodes
             .map((node: any) => {
                 const imageUrl = 
-                    node.happenings?.uploadHappenings?.node?.sourceUrl || 
+                    node.happenings?.uploadImage?.node?.sourceUrl || 
                     node.featuredImage?.node?.sourceUrl || 
                     '';
                 

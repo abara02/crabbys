@@ -2,14 +2,22 @@ async function testQuery() {
     const url = 'https://olivedrab-loris-573312.hostingersite.com/graphql';
 
     try {
+        console.log("Attempt 2: Checking what is inside the 'happenings' field group");
+        // We know 'happenings' exists on type 'Happening'. Let's find out what's inside it.
         const query = `
         query { 
             happenings(first: 5) { 
                 nodes { 
                     title
-                    post_happenings {
-                        upload_happenings { node { sourceUrl } }
-                        uploadHappenings { node { sourceUrl } }
+                    happenings {
+                        uploadImage { node { sourceUrl } }
+                        image { node { sourceUrl } }
+                        picture { node { sourceUrl } }
+                        photo { node { sourceUrl } }
+                        upload_image { node { sourceUrl } }
+                        file { node { sourceUrl } }
+                        mediaItemUrl
+                        sourceUrl
                     }
                 } 
             } 
@@ -22,9 +30,10 @@ async function testQuery() {
         });
         
         const data = await response.json();
-        console.log("Happenings test data:", JSON.stringify(data, null, 2));
+        console.log(JSON.stringify(data, null, 2));
+
     } catch (e) {
-        console.error(e);
+        console.error("Test failed:", e);
     }
 }
 testQuery();
