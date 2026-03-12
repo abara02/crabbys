@@ -130,6 +130,19 @@ button {
   transform: translateY(-2px);
 }
 
+.see-more-btn {
+  background: var(--white);
+  color: #111;
+  border: 2px solid transparent;
+}
+
+.menu-card:hover .see-more-btn,
+.see-more-btn:hover {
+  background: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+}
+
 .glass-nav {
   background: var(--nav-bg);
   backdrop-filter: blur(12px);

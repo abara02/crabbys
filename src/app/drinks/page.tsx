@@ -371,7 +371,7 @@ function DrinksPageContent() {
                     }}>
                         Drinks
                     </h1>
-                    <div style={{ width: '100px', height: '4px', background: 'white', margin: '0 auto' }}></div>
+                    <div style={{ width: '100px', height: '4px', background: 'var(--accent)', margin: '0 auto' }}></div>
                 </div>
             </div>
 

@@ -89,15 +89,14 @@ export default function Home() {
               <div style={{ position: 'absolute', bottom: '1.75rem', left: '1.75rem' }}>
                 <h3 style={{ color: 'white', fontSize: '1.8rem', fontFamily: 'var(--font-serif)', margin: '0 0 0.2rem' }}>Food</h3>
                 <p style={{ color: 'rgba(255,255,255,0.85)', margin: '0 0 1rem', fontSize: '0.9rem' }}>Seafood, American Classics &amp; More</p>
-                <span style={{
+                <span className="see-more-btn" style={{
                   display: 'inline-block',
-                  background: 'white',
-                  color: '#111',
                   padding: '0.45rem 1.4rem',
                   borderRadius: '50px',
                   fontSize: '0.85rem',
                   fontWeight: '600',
-                  letterSpacing: '0.3px'
+                  letterSpacing: '0.3px',
+                  transition: 'all 0.3s ease'
                 }}>See more</span>
               </div>
             </Link>
@@ -117,15 +116,14 @@ export default function Home() {
               <div style={{ position: 'absolute', bottom: '1.75rem', left: '1.75rem' }}>
                 <h3 style={{ color: 'white', fontSize: '1.8rem', fontFamily: 'var(--font-serif)', margin: '0 0 0.2rem' }}>Drinks</h3>
                 <p style={{ color: 'rgba(255,255,255,0.85)', margin: '0 0 1rem', fontSize: '0.9rem' }}>Amazing Cocktails &amp; More</p>
-                <span style={{
+                <span className="see-more-btn" style={{
                   display: 'inline-block',
-                  background: 'white',
-                  color: '#111',
                   padding: '0.45rem 1.4rem',
                   borderRadius: '50px',
                   fontSize: '0.85rem',
                   fontWeight: '600',
-                  letterSpacing: '0.3px'
+                  letterSpacing: '0.3px',
+                  transition: 'all 0.3s ease'
                 }}>See more</span>
               </div>
             </Link>
