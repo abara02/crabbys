@@ -51,7 +51,7 @@ export default function Footer() {
                         <h3 style={{ borderBottom: '2px solid var(--accent)', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Connect With Us</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'flex-start' }}>
                             <Link href="/">
-                                <img src="/logo.png" alt="Crabby Al's Logo" style={{ height: '70px', width: 'auto', transition: 'transform 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
+                                <img src="/logo.png" alt="Crabby Al's Logo" style={{ height: '100px', width: 'auto', transition: 'transform 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
                             </Link>
                             <div style={{ display: 'flex', gap: '1.25rem' }}>
                                 <Link href="#" style={{ color: 'white', background: 'rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '50%', display: 'flex', transition: 'all 0.3s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-3px)' }} onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)' }}>
