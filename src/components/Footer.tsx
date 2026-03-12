@@ -12,7 +12,7 @@ export default function Footer() {
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                         <h3 style={{ borderBottom: '2px solid var(--accent)', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Connect With Us</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'flex-start' }}>
-                            <Link href="/">
+                            <Link href="/" style={{ alignSelf: 'center', margin: '0.5rem 0' }}>
                                 <img src="/logo.png" alt="Crabby Al's Logo" style={{ height: '150px', width: 'auto', transition: 'transform 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
                             </Link>
                             <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
