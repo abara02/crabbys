@@ -26,6 +26,7 @@ export default function HeroSection() {
                     backgroundSize: 'cover',
                     backgroundPosition: 'calc(50% + 50px) 60%',
                     backgroundRepeat: 'no-repeat',
+                    backgroundAttachment: 'fixed',
                     backgroundColor: '#000'
                 }}>
             </div>
@@ -99,6 +100,7 @@ export default function HeroSection() {
                     .hero-section-mobile { height: 62dvh !important; }
                     .hero-side-fade { display: none !important; }
                     .hero-bg {
+                        background-attachment: scroll !important;
                         background-size: 300% !important;
                         background-position: calc(50% + 53px) 53% !important;
                     }
