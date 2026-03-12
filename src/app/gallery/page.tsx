@@ -8,7 +8,9 @@ const GALLERY_IMAGES = [
   '/gallery/eventhero.png',
   '/gallery/front.webp',
   '/gallery/bar crowd crab.png',
-  '/gallery/crab crowd.png'
+  '/gallery/crab crowd.png',
+  '/gallery/interior_1.jpg',
+  '/gallery/interior_2.jpg'
 ];
 
 export default function GalleryPage() {
