@@ -57,7 +57,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Drinks', href: '/drinks' },
-    { name: 'Specials', href: '/specials' },
+    { name: 'Happenings', href: '/specials' },
     { name: 'Live Music', href: '/events' },
     { name: 'Private Events', href: '/private-events' },
     { name: 'More', href: '/contact' },

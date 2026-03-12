@@ -243,3 +243,71 @@ export async function getSeasonalDrinkImages(): Promise<SeasonalDrinkData[]> {
         return [];
     }
 }
+
+export interface HappeningData {
+    id: string;
+    title: string;
+    imageUrl: string;
+}
+
+export async function getHappenings(): Promise<HappeningData[]> {
+    const query = `
+        query GetHappenings {
+            happenings(first: 50) {
+                nodes {
+                    id
+                    title
+                    featuredImage {
+                        node {
+                            sourceUrl
+                        }
+                    }
+                    happenings {
+                        uploadHappenings {
+                            node {
+                                sourceUrl
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    `;
+
+    try {
+        const response = await fetch(WP_GRAPHQL_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query }),
+        });
+
+        const result = await response.json();
+
+        if (result.errors) {
+            console.error('❌ GraphQL Errors for Happenings:', JSON.stringify(result.errors, null, 2));
+            return [];
+        }
+
+        const nodes = result?.data?.happenings?.nodes || [];
+
+        return nodes
+            .map((node: any) => {
+                const imageUrl = 
+                    node.happenings?.uploadHappenings?.node?.sourceUrl || 
+                    node.featuredImage?.node?.sourceUrl || 
+                    '';
+                
+                if (!imageUrl) return null;
+
+                return {
+                    id: node.id || Math.random().toString(),
+                    title: node.title || 'Happening',
+                    imageUrl
+                };
+            })
+            .filter((item: any): item is HappeningData => item !== null);
+    } catch (error) {
+        console.error('Error fetching happenings from WordPress:', error);
+        return [];
+    }
+}
