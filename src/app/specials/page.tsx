@@ -81,16 +81,27 @@ export default function HappeningsPage() {
                                     border: '1px solid rgba(255,255,255,0.1)',
                                     backgroundColor: '#111',
                                     display: 'flex',
-                                    flexDirection: 'column'
+                                    flexDirection: 'column',
+                                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                                    cursor: 'pointer'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-8px)';
+                                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.7)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
                                 }}>
                                     <img
                                         src={happening.imageUrl}
-                                        alt={happening.title || "Crabby Al's Happening"}
+                                        alt="Crabby Al's Happening"
                                         style={{
                                             width: '100%',
                                             height: 'auto',
                                             objectFit: 'contain',
-                                            display: 'block'
+                                            display: 'block',
+                                            transition: 'transform 0.3s ease'
                                         }}
                                         onError={(e) => {
                                             const img = e.target as HTMLImageElement;
@@ -101,24 +112,6 @@ export default function HappeningsPage() {
                                             }
                                         }}
                                     />
-                                    {happening.title && happening.title !== 'Happening' && (
-                                        <div style={{
-                                            padding: '1rem',
-                                            background: 'rgba(0,0,0,0.8)',
-                                            borderTop: '1px solid rgba(255,255,255,0.05)'
-                                        }}>
-                                            <h3 style={{
-                                                margin: 0,
-                                                fontSize: '1.1rem',
-                                                color: 'var(--accent)',
-                                                fontFamily: 'var(--font-serif)',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '1px'
-                                            }}>
-                                                {happening.title}
-                                            </h3>
-                                        </div>
-                                    )}
                                 </div>
                             ))}
                         </div>
