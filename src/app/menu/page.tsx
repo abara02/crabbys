@@ -8,14 +8,14 @@ import CarouselGallery from '@/components/CarouselGallery';
 
 const MENU_GALLERY_IMAGES = [
     '/pics/lobster.png',
+    '/pics/pickle.png',
+    '/pics/clams.png',
+    '/pics/pasta.jpeg',
+    '/pics/shrimp.png',
+    '/pics/tacos.jpeg',
     '/pics/calamari.png',
     '/pics/steak and eggs.jpeg',
-    '/pics/clams.png',
-    '/pics/shrimp.png',
     '/pics/chowder.png',
-    '/pics/pasta.jpeg',
-    '/pics/pickle.png',
-    '/pics/tacos.jpeg',
     '/pics/dinner.jpeg'
 ];
 
