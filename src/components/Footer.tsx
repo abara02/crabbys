@@ -21,7 +21,7 @@ export default function Footer() {
                     {/* Column 1: Connect With Us */}
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                         <h3 style={headerStyle}>Connect With Us</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'flex-start' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center', width: '100%', marginLeft: '-33px' }}>
                             <Link href="/">
                                 <img src="/logo.png" alt="Crabby Al's Logo" style={{ height: '150px', width: 'auto', transition: 'transform 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
                             </Link>
