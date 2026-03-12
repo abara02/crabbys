@@ -60,7 +60,7 @@ export default function Navbar() {
     { name: 'Happenings', href: '/happenings' },
     { name: 'Live Music', href: '/livemusic' },
     { name: 'Private Events', href: '/private-events' },
-    { name: 'More', href: '/contact' },
+    { name: 'Gallery', href: '/gallery' },
   ];
 
   const linkStyle = {
