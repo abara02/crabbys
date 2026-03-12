@@ -12,7 +12,11 @@ const MENU_GALLERY_IMAGES = [
     '/pics/steak and eggs.jpeg',
     '/pics/clams.png',
     '/pics/shrimp.png',
-    '/pics/chowder.png'
+    '/pics/chowder.png',
+    '/pics/pasta.jpeg',
+    '/pics/pickle.png',
+    '/pics/tacos.jpeg',
+    '/pics/dinner.jpeg'
 ];
 
 interface MenuItem {
