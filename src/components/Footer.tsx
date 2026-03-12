@@ -15,7 +15,7 @@ export default function Footer() {
                             <Link href="/">
                                 <img src="/logo.png" alt="Crabby Al's Logo" style={{ height: '150px', width: 'auto', transition: 'transform 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
                             </Link>
-                            <div style={{ display: 'flex', gap: '1.25rem' }}>
+                            <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
                                 <Link href="#" style={{ color: 'white', background: 'rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '50%', display: 'flex', transition: 'all 0.3s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-3px)' }} onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)' }}>
                                     <Facebook size={22} />
                                 </Link>
@@ -42,11 +42,11 @@ export default function Footer() {
                         <ul style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                             <li style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', opacity: 0.8 }}>
                                 <MapPin size={18} color="var(--accent)" style={{ flexShrink: 0, marginTop: '4px' }} />
-                                <span>157 East Main Street,<br />Thomaston, CT 06787</span>
+                                <div style={{ textAlign: 'left' }}>157 East Main Street,<br />Thomaston, CT 06787</div>
                             </li>
-                            <li style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', opacity: 0.8 }}>
-                                <Mail size={18} color="var(--accent)" style={{ flexShrink: 0 }} />
-                                <a href="mailto:info@crabbyals.com" style={{ transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.color = 'white'}>info@crabbyals.com</a>
+                            <li style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', opacity: 0.8 }}>
+                                <Mail size={18} color="var(--accent)" style={{ flexShrink: 0, marginTop: '4px' }} />
+                                <div style={{ textAlign: 'left' }}><a href="mailto:info@crabbyals.com" style={{ transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.color = 'white'}>info@crabbyals.com</a></div>
                             </li>
                         </ul>
                     </div>
