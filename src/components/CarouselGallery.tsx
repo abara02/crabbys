@@ -55,8 +55,7 @@ export default function CarouselGallery({ images }: CarouselGalleryProps) {
 
     return (
         <div style={{
-            marginTop: '4rem',
-            marginBottom: '4rem',
+            margin: '4rem auto',
             width: '100%',
             maxWidth: '1400px', // Wider to allow peek effect
             background: 'transparent',
