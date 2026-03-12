@@ -9,9 +9,9 @@ export default function Footer() {
             <div className="container">
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
                     {/* Column 1: Connect With Us */}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                         <h3 style={{ borderBottom: '2px solid var(--accent)', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Connect With Us</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'flex-start' }}>
                             <Link href="/">
                                 <img src="/logo.png" alt="Crabby Al's Logo" style={{ height: '150px', width: 'auto', transition: 'transform 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
                             </Link>
@@ -28,7 +28,7 @@ export default function Footer() {
 
                     {/* Column 2: Blurb */}
                     <div>
-                        <h3 style={{ borderBottom: '2px solid var(--accent)', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1.5rem', fontFamily: 'var(--font-serif)', fontSize: '1.5rem' }}>Crabby Al&apos;s</h3>
+                        <h3 style={{ borderBottom: '2px solid var(--accent)', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Crabby Al&apos;s</h3>
                         <p style={{ opacity: 0.8, marginBottom: '1.5rem', lineHeight: '1.8' }}>
                             Thomaston&apos;s Favorite Seafood Restaurant<br /><br />
                             Call for reservations:<br />
