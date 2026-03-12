@@ -258,7 +258,6 @@ export default function PrivateEventsPage() {
                             { src: '/pics/buffet.png', alt: 'Buffet', gridColumn: '2', gridRow: '2' },
                             { src: '/pics/event crabby.png', alt: 'Event at Crabby Als', gridColumn: '1 / 3', gridRow: '3' },
                             { src: '/pics/dinning room.png', alt: 'Dining Room', gridColumn: '3', gridRow: '3' },
-                            { src: '/gallery/5.jpg', alt: 'Interior', gridColumn: '1 / 4', gridRow: '4' },
                         ].map((img, i) => (
                             <div key={i} style={{
                                 gridColumn: img.gridColumn,
@@ -307,7 +306,6 @@ export default function PrivateEventsPage() {
 
 const GALLERY_IMAGES = [
     { src: '/pics/Event gallery.png', alt: 'Event Gallery' },
-    { src: '/gallery/5.jpg', alt: 'Interior' },
     { src: '/gallery/11.jpg', alt: 'Interior 2' },
     { src: '/pics/buffet.png', alt: 'Buffet' },
     { src: '/pics/event crabby.png', alt: 'Event at Crabby Als' },
@@ -320,12 +318,11 @@ function MobileGallery() {
         <div className="gallery-mobile">
             {GALLERY_IMAGES.map((img, i) => {
                 // Puzzle layout logic for 2 columns:
-                // Image 0 (SHOTS.png): spans 2 cols
+                // Image 0 (Event Gallery): spans 2 cols
                 // Image 1 & 2: 1 col each
                 // Image 3: spans 2 cols
                 // Image 4 & 5: 1 col each
-                // Image 6: spans 2 cols
-                const isFullWidth = i === 0 || i === 3 || i === 6;
+                const isFullWidth = i === 0 || i === 3;
 
                 return (
                     <div key={i} style={{
