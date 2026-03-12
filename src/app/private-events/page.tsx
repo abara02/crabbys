@@ -39,7 +39,7 @@ export default function PrivateEventsPage() {
             }}>
                 <div style={{
                     position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                    backgroundImage: 'url("/gallery/eventhero.png")',
+                    backgroundImage: 'url("/gallery/13.png")',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center 85%',
                     zIndex: 0
@@ -254,11 +254,11 @@ export default function PrivateEventsPage() {
                         {[
                             { src: '/pics/SHOTS.png', alt: 'Shots', gridColumn: '1 / 3', gridRow: '1' },
                             { src: '/pics/Event gallery.png', alt: 'Event Gallery', gridColumn: '3', gridRow: '1 / 3' },
-                            { src: '/gallery/interior_1.jpg', alt: 'Interior 2', gridColumn: '1', gridRow: '2' },
+                            { src: '/gallery/11.jpg', alt: 'Interior 2', gridColumn: '1', gridRow: '2' },
                             { src: '/pics/buffet.png', alt: 'Buffet', gridColumn: '2', gridRow: '2' },
                             { src: '/pics/event crabby.png', alt: 'Event at Crabby Als', gridColumn: '1 / 3', gridRow: '3' },
                             { src: '/pics/dinning room.png', alt: 'Dining Room', gridColumn: '3', gridRow: '3' },
-                            { src: '/gallery/interior_2.jpg', alt: 'Interior', gridColumn: '1 / 4', gridRow: '4' },
+                            { src: '/gallery/5.jpg', alt: 'Interior', gridColumn: '1 / 4', gridRow: '4' },
                         ].map((img, i) => (
                             <div key={i} style={{
                                 gridColumn: img.gridColumn,
@@ -307,8 +307,8 @@ export default function PrivateEventsPage() {
 
 const GALLERY_IMAGES = [
     { src: '/pics/Event gallery.png', alt: 'Event Gallery' },
-    { src: '/gallery/interior_2.jpg', alt: 'Interior' },
-    { src: '/gallery/interior_1.jpg', alt: 'Interior 2' },
+    { src: '/gallery/5.jpg', alt: 'Interior' },
+    { src: '/gallery/11.jpg', alt: 'Interior 2' },
     { src: '/pics/buffet.png', alt: 'Buffet' },
     { src: '/pics/event crabby.png', alt: 'Event at Crabby Als' },
     { src: '/pics/dinning room.png', alt: 'Dining Room' },

@@ -1,16 +1,19 @@
 import CarouselGallery from '@/components/CarouselGallery';
 
 const GALLERY_IMAGES = [
-  '/gallery/bar_interior_new.jpg',
-  '/gallery/bar_view_wide.jpg',
-  '/gallery/beer taps.jpeg',
-  '/gallery/drinks hero.png',
-  '/gallery/eventhero.png',
-  '/gallery/front.webp',
-  '/gallery/bar crowd crab.png',
-  '/gallery/crab crowd.png',
-  '/gallery/interior_1.jpg',
-  '/gallery/interior_2.jpg'
+  '/gallery/1.png',
+  '/gallery/2.png',
+  '/gallery/3.webp',
+  '/gallery/4.jpg',
+  '/gallery/5.jpg',
+  '/gallery/6.jpeg',
+  '/gallery/7.png',
+  '/gallery/8.jpeg',
+  '/gallery/9.png',
+  '/gallery/10.png',
+  '/gallery/11.jpg',
+  '/gallery/12.png',
+  '/gallery/13.png'
 ];
 
 export default function GalleryPage() {
