@@ -4,6 +4,16 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Leaf, Calendar, Clock, Star, Utensils } from 'lucide-react';
 import { getDailySpecials, DailySpecialData, getSeasonalSpecials, SeasonalSpecialData } from '@/lib/wordpress';
+import CarouselGallery from '@/components/CarouselGallery';
+
+const MENU_GALLERY_IMAGES = [
+    '/pics/lobster.png',
+    '/pics/calamari.png',
+    '/pics/steak and eggs.jpeg',
+    '/pics/clams.png',
+    '/pics/shrimp.png',
+    '/pics/chowder.png'
+];
 
 interface MenuItem {
     name: string;
@@ -545,7 +555,10 @@ function MenuPageContent() {
                             fontSize: '1.2rem',
                             fontWeight: '600'
                         }}>
-                            Ask about Crabby Al’s daily house made desserts!
+                            <div style={{ marginBottom: '2rem' }}>
+                                Ask about Crabby Al’s daily house made desserts!
+                            </div>
+                            <CarouselGallery images={MENU_GALLERY_IMAGES} />
                         </div>
                     )}
 
