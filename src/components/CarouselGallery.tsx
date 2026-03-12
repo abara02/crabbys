@@ -182,6 +182,7 @@ export default function CarouselGallery({ images }: CarouselGalleryProps) {
             {/* Thumbnails Row */}
             <div className="hide-scrollbar" style={{
                 display: 'flex',
+                justifyContent: 'center',
                 gap: '10px',
                 width: '100%',
                 maxWidth: '900px',

@@ -558,7 +558,6 @@ function MenuPageContent() {
                             <div style={{ marginBottom: '2rem' }}>
                                 Ask about Crabby Al’s daily house made desserts!
                             </div>
-                            <CarouselGallery images={MENU_GALLERY_IMAGES} />
                         </div>
                     )}
 
@@ -576,6 +575,8 @@ function MenuPageContent() {
                             />
                         </div>
                     )}
+
+                    <CarouselGallery images={MENU_GALLERY_IMAGES} />
                 </div>
 
                 <div style={{
