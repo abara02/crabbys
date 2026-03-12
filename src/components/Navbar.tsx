@@ -94,7 +94,7 @@ export default function Navbar() {
           <Link href="/" style={linkStyle}>
             Home
             {pathname === '/' && (
-              <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--white)', borderRadius: '2px' }} />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--accent)', borderRadius: '2px' }} />
             )}
           </Link>
 
@@ -111,7 +111,7 @@ export default function Navbar() {
             >
               Menu
               {pathname === '/menu' && (
-                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--white)', borderRadius: '2px' }} />
+                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--accent)', borderRadius: '2px' }} />
               )}
             </Link>
 
@@ -173,7 +173,7 @@ export default function Navbar() {
             >
               Drinks
               {pathname === '/drinks' && (
-                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--white)', borderRadius: '2px' }} />
+                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--accent)', borderRadius: '2px' }} />
               )}
             </Link>
 
@@ -229,7 +229,7 @@ export default function Navbar() {
               <Link key={link.name} href={link.href} style={linkStyle}>
                 {link.name}
                 {isActive && (
-                  <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--white)', borderRadius: '2px' }} />
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'var(--accent)', borderRadius: '2px' }} />
                 )}
               </Link>
             );
