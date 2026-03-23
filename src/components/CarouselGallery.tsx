@@ -70,7 +70,7 @@ export default function CarouselGallery({ images }: CarouselGalleryProps) {
             <div style={{
                 position: 'relative',
                 width: '100%',
-                height: isMobile ? '350px' : '550px',
+                height: isMobile ? '250px' : '550px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

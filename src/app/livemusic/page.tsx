@@ -82,8 +82,8 @@ export default function EventsPage() {
                 }} className="events-grid">
 
                     {/* Left column — Poster, centered on the left-third axis */}
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0 2vw' }}>
-                        <div style={{
+                    <div className="poster-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0 2vw' }}>
+                        <div className="poster-card" style={{
                             background: 'white',
                             borderRadius: '12px',
                             padding: '1rem',
@@ -191,6 +191,10 @@ export default function EventsPage() {
                         @media (max-width: 900px) {
                             .events-grid {
                                 grid-template-columns: 1fr !important;
+                                gap: 6rem;
+                            }
+                            .poster-card {
+                                width: 95% !important;
                             }
                         }
                         @media (max-width: 768px) {

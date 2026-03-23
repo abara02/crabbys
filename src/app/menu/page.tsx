@@ -280,8 +280,7 @@ function MenuPageContent() {
                     <img src="/logo_with_text.png" alt="Crabby Al's Logo" style={{ height: '150px', width: 'auto', marginBottom: '2rem' }} />
 
                     {/* Tab Navigation */}
-                    <div style={{
-                        display: 'flex',
+                    <div className="desktop-tabs" style={{
                         justifyContent: 'center',
                         flexWrap: 'wrap',
                         gap: '1rem',
@@ -311,6 +310,46 @@ function MenuPageContent() {
                                 {tab.name}
                             </button>
                         ))}
+                    </div>
+
+                    {/* Tab Navigation - Mobile */}
+                    <div className="mobile-tabs">
+                        <div style={{ position: 'relative' }}>
+                            <select
+                                value={activeTab}
+                                onChange={(e) => setActiveTab(e.target.value)}
+                                style={{
+                                    width: '100%',
+                                    padding: '1rem 3rem 1rem 1.5rem',
+                                    borderRadius: '50px',
+                                    border: '2px solid var(--primary)',
+                                    background: 'var(--white)',
+                                    color: 'var(--primary)',
+                                    fontSize: '1.1rem',
+                                    fontWeight: 'bold',
+                                    appearance: 'none',
+                                    cursor: 'pointer',
+                                    boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+                                    outline: 'none'
+                                }}
+                            >
+                                {tabs.map((tab) => (
+                                    <option key={tab.name} value={tab.name}>{tab.name}</option>
+                                ))}
+                            </select>
+                            <div style={{
+                                position: 'absolute',
+                                right: '1.5rem',
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                pointerEvents: 'none',
+                                color: 'var(--primary)',
+                                display: 'flex',
+                                alignItems: 'center'
+                            }}>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </div>
+                        </div>
                     </div>
 
                     {activeTab === "Main Menu" && (
@@ -516,14 +555,14 @@ function MenuPageContent() {
 
                                 <div style={{
                                     display: 'grid',
-                                    gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+                                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))',
                                     gap: '1.25rem 3rem'
                                 }}>
                                     {section.items.map((item, iidx) => (
                                         <div key={iidx} style={{ borderBottom: '1px dashed rgba(0,0,0,0.1)', paddingBottom: '0.75rem' }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '1rem', marginBottom: '0.15rem' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', marginBottom: '0.15rem' }}>
                                                 <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '700', letterSpacing: '0.5px' }}>{item.name}</h3>
-                                                <div style={{ fontWeight: 'bold', color: 'var(--accent)', fontSize: '1rem', whiteSpace: 'nowrap' }}>
+                                                <div style={{ fontWeight: 'bold', color: 'var(--accent)', fontSize: '1rem', textAlign: 'right' }}>
                                                     {item.price}
                                                 </div>
                                             </div>
@@ -609,6 +648,25 @@ function MenuPageContent() {
                 @keyframes fadeIn {
                     from { opacity: 0; transform: translateY(10px); }
                     to { opacity: 1; transform: translateY(0); }
+                }
+                
+                .desktop-tabs {
+                    display: flex;
+                }
+                .mobile-tabs {
+                    display: none;
+                }
+                @media (max-width: 768px) {
+                    .desktop-tabs {
+                        display: none !important;
+                    }
+                    .mobile-tabs {
+                        display: block;
+                        margin-bottom: 3rem;
+                        max-width: 400px;
+                        margin-left: auto;
+                        margin-right: auto;
+                    }
                 }
             `}</style>
         </div>
