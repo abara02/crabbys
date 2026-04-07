@@ -1,10 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Send, CheckCircle } from 'lucide-react';
+import { getBandScheduleImage } from '@/lib/wordpress';
 
 export default function EventsPage() {
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [posterUrl, setPosterUrl] = useState<string | null>(null);
+    const [loadingPoster, setLoadingPoster] = useState(true);
+
+    useEffect(() => {
+        getBandScheduleImage().then((url) => {
+            if (url) setPosterUrl(url);
+            setLoadingPoster(false);
+        });
+    }, []);
 
     const handleFormSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -71,137 +81,140 @@ export default function EventsPage() {
                 </div>
             </div>
 
-            <div style={{ padding: '6rem 0' }}>
-                {/* Two-column full-width layout */}
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    width: '100%',
-                    minHeight: '600px',
-                    alignItems: 'center',
-                }} className="events-grid">
-
-                    {/* Left column — Poster, centered on the left-third axis */}
-                    <div className="poster-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0 2vw' }}>
-                        <div className="poster-card" style={{
+            <div style={{ padding: '4rem 0 6rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                
+                {/* Poster Section (Centered) */}
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '0 2vw', marginBottom: '4rem' }}>
+                    {loadingPoster ? (
+                        <p style={{ color: 'rgba(255,255,255,0.6)', fontStyle: 'italic' }}>Loading band schedule...</p>
+                    ) : (
+                        <div style={{
                             background: 'white',
                             borderRadius: '12px',
                             padding: '1rem',
                             boxShadow: '0 10px 40px rgba(0,0,0,0.6)',
-                            width: '75%',
-                            overflow: 'hidden'
+                            maxWidth: '1000px', // Prevents it from getting too enormously wide on giant screens
+                            overflow: 'hidden',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
                         }}>
                             <img
-                                src="/feb-poster.png"
-                                alt="February Upcoming Schedule"
-                                style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '8px' }}
+                                src={posterUrl || "/feb-poster.png"}
+                                alt="Upcoming Schedule"
+                                style={{ 
+                                    maxWidth: '100%', 
+                                    height: 'auto', 
+                                    display: 'block', 
+                                    borderRadius: '8px' 
+                                }}
                             />
                         </div>
-                    </div>
+                    )}
+                </div>
 
-                    {/* Right column — Band Booking Form, centered on the right-third axis */}
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0 4vw' }}>
-                        <div style={{
-                            background: 'rgba(255, 255, 255, 0.03)',
-                            borderRadius: '24px',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            overflow: 'hidden',
-                            width: '100%',
-                            maxWidth: '620px',
-                        }}>
-                            <div style={{ padding: '2rem 2.2rem', textAlign: 'center' }}>
-                                <h2 style={{
-                                    fontFamily: 'var(--font-serif)',
-                                    fontSize: '2.2rem',
-                                    color: 'var(--accent)',
-                                    marginBottom: '1rem',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '2px'
-                                }}>
-                                    Band Bookings
-                                </h2>
-                                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1rem', margin: '0 auto 1rem' }}>
-                                    Interested in playing at Crabby Al&apos;s? Fill out the form below and our booking team will get in touch with you.
-                                </p>
+                {/* Red Separator Line */}
+                <div style={{
+                    width: '80%',
+                    maxWidth: '800px',
+                    height: '2px',
+                    background: 'var(--accent)', // The red accent color
+                    marginBottom: '4rem'
+                }}></div>
 
-                                {!formSubmitted ? (
-                                    <form
-                                        onSubmit={handleFormSubmit}
-                                        action="https://formspree.io/f/crabbyalsbands@gmail.com"
-                                        method="POST"
-                                        style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.2rem', textAlign: 'left' }}
-                                    >
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                            <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Band Name</label>
-                                            <input required type="text" name="band-name" placeholder="Enter your band name" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
-                                        </div>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                            <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Contact Email</label>
-                                            <input required type="email" name="_replyto" placeholder="your@email.com" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
-                                        </div>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                            <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Requested Rate</label>
-                                            <input required type="text" name="rate" placeholder="e.g. $500 / 3 hours" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
-                                        </div>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                            <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Genres</label>
-                                            <input required type="text" name="genres" placeholder="e.g. Rock, Blues, Jazz" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
-                                        </div>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', gridColumn: 'span 2' }}>
-                                            <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Samples of Music (Links)</label>
-                                            <input required type="text" name="samples" placeholder="Link to Spotify, YouTube, SoundCloud, etc." style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
-                                        </div>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', gridColumn: 'span 2' }}>
-                                            <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Availability</label>
-                                            <textarea required name="availability" rows={2} placeholder="Indicate when you are interested in playing..." style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', resize: 'none', fontSize: '0.9rem' }} />
-                                        </div>
-                                        <div style={{ gridColumn: 'span 2', marginTop: '0.5rem' }}>
-                                            <button
-                                                type="submit"
-                                                style={{ width: '100%', padding: '1.1rem', background: 'var(--accent)', color: 'black', border: 'none', borderRadius: '8px', fontWeight: '800', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '2px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.8rem', transition: 'transform 0.2s ease, filter 0.2s ease' }}
-                                                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.filter = 'brightness(1.1)'; }}
-                                                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.filter = 'brightness(1)'; }}
-                                            >
-                                                <Send size={18} /> Submit Inquiry
-                                            </button>
-                                        </div>
-                                    </form>
-                                ) : (
-                                    <div style={{ padding: '3rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
-                                        <CheckCircle size={60} color="var(--accent)" />
-                                        <h3 style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', margin: 0 }}>Inquiry Sent!</h3>
-                                        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.1rem', margin: 0 }}>
-                                            Thank you for your interest. We&apos;ll review your music and get back to you soon.
-                                        </p>
-                                        <button onClick={() => setFormSubmitted(false)} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'white', padding: '0.8rem 2rem', borderRadius: '50px', cursor: 'pointer', marginTop: '1rem' }}>
-                                            Send Another
+                {/* Right column — Band Booking Form, centered */}
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '0 4vw' }}>
+                    <div style={{
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        borderRadius: '24px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        overflow: 'hidden',
+                        width: '100%',
+                        maxWidth: '620px',
+                    }}>
+                        <div style={{ padding: '2rem 2.2rem', textAlign: 'center' }}>
+                            <h2 style={{
+                                fontFamily: 'var(--font-serif)',
+                                fontSize: '2.2rem',
+                                color: 'var(--accent)',
+                                marginBottom: '1rem',
+                                textTransform: 'uppercase',
+                                letterSpacing: '2px'
+                            }}>
+                                Band Bookings
+                            </h2>
+                            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1rem', margin: '0 auto 1rem' }}>
+                                Interested in playing at Crabby Al&apos;s? Fill out the form below and our booking team will get in touch with you.
+                            </p>
+
+                            {!formSubmitted ? (
+                                <form
+                                    onSubmit={handleFormSubmit}
+                                    action="https://formspree.io/f/crabbyalsbands@gmail.com"
+                                    method="POST"
+                                    style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.2rem', textAlign: 'left' }}
+                                >
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Band Name</label>
+                                        <input required type="text" name="band-name" placeholder="Enter your band name" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Contact Email</label>
+                                        <input required type="email" name="_replyto" placeholder="your@email.com" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Requested Rate</label>
+                                        <input required type="text" name="rate" placeholder="e.g. $500 / 3 hours" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Genres</label>
+                                        <input required type="text" name="genres" placeholder="e.g. Rock, Blues, Jazz" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', gridColumn: 'span 2' }}>
+                                        <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Samples of Music (Links)</label>
+                                        <input required type="text" name="samples" placeholder="Link to Spotify, YouTube, SoundCloud, etc." style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', gridColumn: 'span 2' }}>
+                                        <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Availability</label>
+                                        <textarea required name="availability" rows={2} placeholder="Indicate when you are interested in playing..." style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', resize: 'none', fontSize: '0.9rem' }} />
+                                    </div>
+                                    <div style={{ gridColumn: 'span 2', marginTop: '0.5rem' }}>
+                                        <button
+                                            type="submit"
+                                            style={{ width: '100%', padding: '1.1rem', background: 'var(--accent)', color: 'black', border: 'none', borderRadius: '8px', fontWeight: '800', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '2px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.8rem', transition: 'transform 0.2s ease, filter 0.2s ease' }}
+                                            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.filter = 'brightness(1.1)'; }}
+                                            onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.filter = 'brightness(1)'; }}
+                                        >
+                                            <Send size={18} /> Submit Inquiry
                                         </button>
                                     </div>
-                                )}
+                                </form>
+                            ) : (
+                                <div style={{ padding: '3rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
+                                    <CheckCircle size={60} color="var(--accent)" />
+                                    <h3 style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', margin: 0 }}>Inquiry Sent!</h3>
+                                    <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.1rem', margin: 0 }}>
+                                        Thank you for your interest. We&apos;ll review your music and get back to you soon.
+                                    </p>
+                                    <button onClick={() => setFormSubmitted(false)} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'white', padding: '0.8rem 2rem', borderRadius: '50px', cursor: 'pointer', marginTop: '1rem' }}>
+                                        Send Another
+                                    </button>
+                                </div>
+                            )}
 
-                                <p style={{ marginTop: '2rem', fontSize: '0.8rem', color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>
-                                    *This form is specifically for band inquiries, not reservations.
-                                </p>
-                            </div>
+                            <p style={{ marginTop: '2rem', fontSize: '0.8rem', color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>
+                                *This form is specifically for band inquiries, not reservations.
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <style jsx>{`
-                        @media (max-width: 900px) {
-                            .events-grid {
-                                grid-template-columns: 1fr !important;
-                                gap: 6rem;
-                            }
-                            .poster-card {
-                                width: 95% !important;
-                            }
-                        }
-                        @media (max-width: 768px) {
-                            form { grid-template-columns: 1fr !important; }
-                            form > div { grid-column: span 1 !important; }
-                        }
-                    `}</style>
+                    @media (max-width: 768px) {
+                        form { grid-template-columns: 1fr !important; }
+                        form > div { grid-column: span 1 !important; }
+                    }
+                `}</style>
             </div>
         </div>
     );

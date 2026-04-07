@@ -6,9 +6,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CarouselGalleryProps {
     images: string[];
+    objectFit?: 'cover' | 'contain';
 }
 
-export default function CarouselGallery({ images }: CarouselGalleryProps) {
+export default function CarouselGallery({ images, objectFit = 'cover' }: CarouselGalleryProps) {
     const [index, setIndex] = useState(0);
     const [direction, setDirection] = useState(0);
     const total = images.length;
@@ -149,7 +150,7 @@ export default function CarouselGallery({ images }: CarouselGalleryProps) {
                                     style={{
                                         width: '100%',
                                         height: '100%',
-                                        objectFit: 'cover',
+                                        objectFit: objectFit,
                                         pointerEvents: 'none'
                                     }}
                                 />
@@ -182,13 +183,9 @@ export default function CarouselGallery({ images }: CarouselGalleryProps) {
             <div className="hide-scrollbar" style={{
                 display: 'flex',
                 justifyContent: 'center',
-                gap: '10px',
+                gap: '8px',
                 width: '100%',
-                maxWidth: '900px',
-                overflowX: 'auto',
                 padding: '0.5rem 1rem',
-                scrollbarWidth: 'none', // Firefox
-                msOverflowStyle: 'none' // IE and Edge
             }}>
                 {images.map((src, idx) => (
                     <button
@@ -198,17 +195,18 @@ export default function CarouselGallery({ images }: CarouselGalleryProps) {
                             setIndex(index + (idx - activeIndex));
                         }}
                         style={{
-                            flex: '0 0 auto',
-                            width: '80px',
-                            height: '60px',
+                            flex: '0 1 80px', // Allow them to shrink to fit one line
+                            minWidth: 0,
+                            height: 'auto',
+                            aspectRatio: '4/3',
                             padding: 0,
-                            margin: 0,
                             border: idx === activeIndex ? '2px solid var(--accent)' : '2px solid transparent',
                             borderRadius: '8px',
                             overflow: 'hidden',
                             cursor: 'pointer',
                             transition: 'all 0.2s',
-                            opacity: idx === activeIndex ? 1 : 0.5
+                            opacity: idx === activeIndex ? 1 : 0.5,
+                            background: 'transparent'
                         }}
                         onMouseEnter={e => { if (idx !== activeIndex) e.currentTarget.style.opacity = '0.8' }}
                         onMouseLeave={e => { if (idx !== activeIndex) e.currentTarget.style.opacity = '0.5' }}
@@ -217,7 +215,7 @@ export default function CarouselGallery({ images }: CarouselGalleryProps) {
                         <img
                             src={src}
                             alt={`Thumbnail ${idx + 1}`}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            style={{ width: '100%', height: '100%', objectFit: objectFit }}
                         />
                     </button>
                 ))}

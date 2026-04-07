@@ -37,7 +37,7 @@ export default function GalleryPage() {
 
       {/* Carousel Section */}
       <section className="section" style={{ padding: '0 0 5rem 0' }}>
-         <CarouselGallery images={GALLERY_IMAGES} />
+         <CarouselGallery images={GALLERY_IMAGES} objectFit="contain" />
       </section>
     </div>
   );

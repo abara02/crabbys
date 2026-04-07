@@ -18,6 +18,13 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Crabby Al's Seafood Restaurant | Thomaston, CT",
   description: "Experience the freshest seafood in Thomaston, CT. Lobster rolls, clam chowder, live music, and a welcoming atmosphere at Crabby Al's.",
+  openGraph: {
+    images: ['/pics/lobster.png'],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ['/pics/lobster.png'],
+  },
 };
 
 export default function RootLayout({

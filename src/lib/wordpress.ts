@@ -1,4 +1,4 @@
-const WP_GRAPHQL_URL = 'https://olivedrab-loris-573312.hostingersite.com/graphql';
+const WP_GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://olivedrab-loris-573312.hostingersite.com/graphql';
 
 export interface DailySpecialData {
     imageUrl: string;
@@ -304,5 +304,46 @@ export async function getHappenings(): Promise<HappeningData[]> {
     } catch (error) {
         console.error('Error fetching happenings from WordPress:', error);
         return [];
+    }
+}
+
+export async function getBandScheduleImage(): Promise<string | null> {
+    const query = `
+        query GetBandSchedule {
+            bandSchedules(first: 1) {
+                nodes {
+                    bandSchedlue {
+                        uploadBandSchedule {
+                            node {
+                                sourceUrl
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    `;
+
+    try {
+        const response = await fetch(WP_GRAPHQL_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query }),
+        });
+
+        const result = await response.json();
+
+        if (result.errors) {
+            console.error('❌ GraphQL Errors for Band Schedule:', JSON.stringify(result.errors, null, 2));
+            return null;
+        }
+
+        const node = result?.data?.bandSchedules?.nodes?.[0];
+        if (!node) return null;
+
+        return node.bandSchedlue?.uploadBandSchedule?.node?.sourceUrl || null;
+    } catch (error) {
+        console.error('Error fetching band schedule from WordPress:', error);
+        return null;
     }
 }
